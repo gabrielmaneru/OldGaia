@@ -1,5 +1,8 @@
 #pragma once
-extern Gaia::Program* Gaia::create_program();
+
+namespace Gaia {
+	extern Program* create_program();
+}
 
 int main(int argc, char ** argv)
 {

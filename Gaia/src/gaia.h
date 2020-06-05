@@ -1,6 +1,5 @@
 #pragma once
 
-// Program class
+#include "core/definitions.h"
+
 #include "core/program.h"
-// Entry
-#include "core/entry.h"

@@ -1,21 +1,12 @@
 #include <gaia.h>
+#include <core/entry_point.h>
 
-class Sandbox : public Gaia::Program
+Program_API(Sandbox)
+
+Sandbox::Sandbox()
 {
-public:
-	Sandbox()
-	{
+}
 
-	}
-
-	~Sandbox()
-	{
-
-	}
-};
-
-Gaia::Program* Gaia::create_program()
+Sandbox::~Sandbox()
 {
-	static Sandbox* instance = new Sandbox();
-	return instance;
 }

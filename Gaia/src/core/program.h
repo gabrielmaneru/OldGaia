@@ -1,16 +1,22 @@
 #pragma once
-#include "target.h"
+#include "gaia_pch.h"
+#include "window.h"
 
 namespace Gaia {
 	class Program
 	{
 	public:
 		Program();
+		virtual void run()final;
 		virtual ~Program();
-		void run();
-
+		
 	private:
-
+		Unique<Window> m_window;
 	};
-	Program * create_program();
 }
+
+#define Program_API(program)\
+class program : public Gaia::Program\
+{public:program();~program();};\
+Gaia::Program* Gaia::create_program()\
+{static program* instance = new program(); return instance;}

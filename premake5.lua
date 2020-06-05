@@ -40,8 +40,8 @@ group ""
 		targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 		objdir ("bin-obj/" .. outputdir .. "/%{prj.name}")
 
-		--pchheader "gaia-pch.h"
-		--pchsource "Gaia/src/gaia-pch.cpp"
+		pchheader "gaia_pch.h"
+		pchsource "Gaia/src/gaia_pch.cpp"
 
 		files
 		{
