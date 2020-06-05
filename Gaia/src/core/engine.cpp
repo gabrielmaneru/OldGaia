@@ -3,7 +3,7 @@
 namespace Gaia {
 	Engine::Engine()
 	{
-		GAIA_CORE_TRACE("Gaia Started")
+		GAIA_ELOG_TRACE("Gaia Started")
 		// Check is application already exists
 		static Engine* instance = nullptr;
 		assert(instance == nullptr);
@@ -16,7 +16,7 @@ namespace Gaia {
 
 	Engine::~Engine()
 	{
-		GAIA_CORE_TRACE("Gaia Ended")
+		GAIA_ELOG_TRACE("Gaia Ended")
 	}
 
 	void Engine::run()

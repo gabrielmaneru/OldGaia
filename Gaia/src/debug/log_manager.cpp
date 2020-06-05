@@ -14,18 +14,18 @@ namespace Gaia {
 			//log_sinks[1]->set_pattern("[%T] [%l] %n: %v");
 
 
-			s_core_logger = std::make_shared<spdlog::logger>("ENGINE", begin(log_sinks), end(log_sinks));
-			spdlog::register_logger(s_core_logger);
-			s_core_logger->set_level(spdlog::level::trace);
-			s_core_logger->flush_on(spdlog::level::trace);
+			s_engine_logger = std::make_shared<spdlog::logger>("ENGINE", begin(log_sinks), end(log_sinks));
+			spdlog::register_logger(s_engine_logger);
+			s_engine_logger->set_level(spdlog::level::trace);
+			s_engine_logger->flush_on(spdlog::level::trace);
 
-			s_client_logger = std::make_shared<spdlog::logger>("PROGRAM", begin(log_sinks), end(log_sinks));
-			spdlog::register_logger(s_client_logger);
-			s_client_logger->set_level(spdlog::level::trace);
-			s_client_logger->flush_on(spdlog::level::trace);
+			s_program_logger = std::make_shared<spdlog::logger>("PROGRAM", begin(log_sinks), end(log_sinks));
+			spdlog::register_logger(s_program_logger);
+			s_program_logger->set_level(spdlog::level::trace);
+			s_program_logger->flush_on(spdlog::level::trace);
 
 		}
-		Shared<spdlog::logger> s_core_logger;
-		Shared<spdlog::logger> s_client_logger;
+		Shared<spdlog::logger> s_engine_logger;
+		Shared<spdlog::logger> s_program_logger;
 	}
 }
