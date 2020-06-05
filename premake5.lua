@@ -124,12 +124,12 @@ group ""
 			systemversion "latest"
 		
 		filter "configurations:Debug"
-			defines "HZ_DEBUG"
+			defines "Gaia_DEBUG"
 			runtime "Debug"
 			symbols "on"
 
 		filter "configurations:Release"
-			defines "HZ_RELEASE"
+			defines "Gaia_RELEASE"
 			runtime "Release"
 			optimize "on"
 			
