@@ -18,11 +18,16 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 IncludeDir = {}
 IncludeDir["glm"] = "Gaia/extern/glm"
+IncludeDir["GLFW"] = "Gaia/extern/GLFW/include"
+IncludeDir["Glad"] = "Gaia/extern/Glad/include"
+IncludeDir["ImGui"] = "Gaia/extern/imgui"
+IncludeDir["glm"] = "Gaia/extern/glm"
+IncludeDir["stb_image"] = "Gaia/extern/stb_image"
 
---group "Extern"
---	include "Gaia/extern/GLFW"
---	include "Gaia/extern/Glad"
---	include "Gaia/extern/imgui"
+group "Extern"
+	include "Gaia/extern/GLFW"
+	include "Gaia/extern/Glad"
+	include "Gaia/extern/imgui"
 
 group ""
 	project "Gaia"
@@ -41,7 +46,11 @@ group ""
 		files
 		{
 			"%{prj.name}/src/**.h",
-			"%{prj.name}/src/**.cpp"
+			"%{prj.name}/src/**.cpp",
+			"%{prj.name}/vendor/stb_image/**.h",
+			"%{prj.name}/vendor/stb_image/**.cpp",
+			"%{prj.name}/vendor/glm/glm/**.hpp",
+			"%{prj.name}/vendor/glm/glm/**.inl"
 		}
 
 		defines
@@ -52,20 +61,24 @@ group ""
 
 		includedirs
 		{
-			"%{prj.name}/src"
+			"%{prj.name}/src",
+			"%{IncludeDir.GLFW}",
+			"%{IncludeDir.Glad}",
+			"%{IncludeDir.ImGui}",
+			"%{IncludeDir.glm}",
+			"%{IncludeDir.stb_image}"
 		}
 
 		links 
 		{ 
+			"GLFW",
+			"Glad",
+			"ImGui",
 			"opengl32.lib"
 		}
 
 		filter "system:windows"
 			systemversion "latest"
-
-			defines
-			{
-			}
 
 		filter "configurations:Debug"
 			defines "GAIA_DEBUG"
@@ -76,7 +89,9 @@ group ""
 			defines "GAIA_RELEASE"
 			runtime "Release"
 			optimize "on"
-
+			
+		
+	
 	project "Sandbox"
 		location "Sandbox"
 		kind "ConsoleApp"
@@ -96,7 +111,8 @@ group ""
 		includedirs
 		{
 			"Gaia/src",
-			"Gaia/extern"
+			"Gaia/extern",
+			"%{IncludeDir.glm}"
 		}
 
 		links
@@ -106,7 +122,7 @@ group ""
 
 		filter "system:windows"
 			systemversion "latest"
-			
+		
 		filter "configurations:Debug"
 			defines "HZ_DEBUG"
 			runtime "Debug"
