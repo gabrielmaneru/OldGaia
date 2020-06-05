@@ -1,5 +1,6 @@
 #pragma once
 
 #include "core/definitions.h"
+#include "core/engine.h"
 
-#include "core/program.h"
+#include "debug/log_manager.h"

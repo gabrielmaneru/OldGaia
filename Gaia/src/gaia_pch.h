@@ -10,3 +10,4 @@
 #include <vector>
 
 #include <core/definitions.h>
+#include <debug/log_manager.h>

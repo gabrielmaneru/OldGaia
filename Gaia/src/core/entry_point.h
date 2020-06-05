@@ -1,11 +1,13 @@
 #pragma once
 
 namespace Gaia {
-	extern Program* create_program();
+	extern Engine* create_program();
 }
 
 int main(int argc, char ** argv)
 {
+	Gaia::Log::Init();
+
 	auto program = Gaia::create_program();
 	program->run();
 	delete program;

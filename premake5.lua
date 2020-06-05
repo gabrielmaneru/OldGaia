@@ -56,12 +56,14 @@ group ""
 		defines
 		{
 			"_CRT_SECURE_NO_WARNINGS",
-			"GLFW_INCLUDE_NONE"
+			"GLFW_INCLUDE_NONE",
+			"GAIA_CORE"
 		}
 
 		includedirs
 		{
-			"%{prj.name}/src",
+			"Gaia/src",
+			"Gaia/extern/spdlog/include",
 			"%{IncludeDir.GLFW}",
 			"%{IncludeDir.Glad}",
 			"%{IncludeDir.ImGui}",
@@ -108,10 +110,16 @@ group ""
 			"%{prj.name}/src/**.cpp"
 		}
 
+		defines
+		{
+			"GAIA_CLIENT"
+		}
+		
 		includedirs
 		{
 			"Gaia/src",
 			"Gaia/extern",
+			"Gaia/extern/spdlog/include",
 			"%{IncludeDir.glm}"
 		}
 

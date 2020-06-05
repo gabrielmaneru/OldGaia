@@ -3,20 +3,20 @@
 #include "window.h"
 
 namespace Gaia {
-	class Program
+	class Engine
 	{
 	public:
-		Program();
+		Engine();
 		virtual void run()final;
-		virtual ~Program();
+		virtual ~Engine();
 		
 	private:
 		Unique<Window> m_window;
 	};
 }
 
-#define Program_API(program)\
-class program : public Gaia::Program\
+#define Gaia_API(program)\
+class program : public Gaia::Engine\
 {public:program();~program();};\
-Gaia::Program* Gaia::create_program()\
+Gaia::Engine* Gaia::create_program()\
 {static program* instance = new program(); return instance;}

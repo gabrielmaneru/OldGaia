@@ -10,22 +10,27 @@ namespace Gaia {
 		// Initialize GLFW once
 		if (s_window_count == 0)
 		{
+			GAIA_CORE_TRACE("Initializing GLFW");
 			assert(glfwInit());
 		}
 		// Create window
+		GAIA_CORE_TRACE("Creating window {0} ({1}, {2})", title, canvas.x, canvas.y);
 		m_native = glfwCreateWindow((int)canvas.x, (int)canvas.y, title.c_str(), nullptr, nullptr);
 		++s_window_count;
 		// Create context
+		GAIA_CORE_TRACE("Creating context");
 		glfwMakeContextCurrent(m_native);
 	}
 
 
 	GLFW_window::~GLFW_window()
 	{
+		GAIA_CORE_TRACE("Destoying window");
 		glfwDestroyWindow(m_native);
 
 		if (--s_window_count == 0)
 		{
+			GAIA_CORE_TRACE("Terminating GLFW");
 			glfwTerminate();
 		}
 	}
