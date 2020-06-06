@@ -1,6 +1,7 @@
 #pragma once
 #include "type_info.h"
 #include "event_interfaces.h"
+#include "event_dispatcher.h"
 
 #include <map>
 
@@ -30,15 +31,21 @@ namespace Gaia {
 		virtual ~EventHandler();
 
 		template<class T, class EVENT>
+		void register_event(T & listener, void(T::*MemberFunction)(const EVENT &))
+		{
+			EventDispatcher::subscribe(listener, TypeInfo(typeid(EVENT)));
+			register_handler(listener, MemberFunction);
+		}
+
+
+	private:
+		void handle_event(const iEvent &)override;
+		template<class T, class EVENT>
 		void register_handler(T & listener, void(T::*MemberFunction)(const EVENT &))
 		{
 			if (collection[TypeInfo(typeid(EVENT))] == 0)
 				collection[TypeInfo(typeid(EVENT))] = new MemberFunctionHandler<T, EVENT>(&listener, MemberFunction);
 		}
-
-		void handle(const iEvent &);
-
-	private:
 		std::map<TypeInfo, iHandler*> collection;
 	};
 }

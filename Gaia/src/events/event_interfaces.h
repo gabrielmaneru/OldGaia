@@ -23,6 +23,8 @@ namespace Gaia{
 	{
 	public:
 		virtual ~iListener() = default;
+	private:
+		friend class EventDispatcher;
 		virtual void handle_event(const iEvent &) = 0;
 	};
 }

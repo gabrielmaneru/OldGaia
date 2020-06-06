@@ -11,7 +11,7 @@ namespace Gaia {
 		virtual ~Engine();
 		
 	private:
-		Unique<Window> m_window;
+		Window* m_window;
 	};
 }
 

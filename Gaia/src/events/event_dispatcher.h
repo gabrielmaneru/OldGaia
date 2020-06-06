@@ -9,14 +9,14 @@ namespace Gaia{
 	class EventDispatcher
 	{
 	public:
-		void subscribe(iListener &, TypeInfo);
-		void unsubscribe(iListener &, TypeInfo);
-		void trigger_event(const iEvent &)const;
-		friend void trigger_event(const iEvent&);
+		static void trigger_event(const iEvent &);
 
 	private:
+		friend class EventHandler;
+		static void subscribe(iListener &, TypeInfo);
+		static void unsubscribe(iListener &, TypeInfo);
+		static EventDispatcher instance;
 		EventDispatcher() = default;
 		std::map<TypeInfo, std::vector<iListener*> > m_listeners;
 	};
-	void trigger_event(const iEvent&);
 }

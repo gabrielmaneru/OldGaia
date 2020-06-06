@@ -9,5 +9,5 @@
 
 // Events
 #include "events/event_interfaces.h"
-#include "events/event_handler.h"
 #include "events/event_dispatcher.h"
+#include "events/event_handler.h"

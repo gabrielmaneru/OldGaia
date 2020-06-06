@@ -1,5 +1,5 @@
 #pragma once
-#include "gaia_pch.h"
+#include <core/definitions.h>
 
 #include <spdlog/spdlog.h>
 

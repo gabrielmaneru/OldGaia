@@ -2,8 +2,9 @@
 #include "window.h"
 #include<platform/GLFW_window.h>
 namespace Gaia{
-	Unique<Window> Window::create(const std::string & title, urect canvas)
+	Window* Window::create(const std::string & title, urect canvas)
 	{
-		return create_unique<GLFW_window>(title, canvas);
+		// Assume Platform is windows
+		return new GLFW_window{ title, canvas };
 	}
 }
