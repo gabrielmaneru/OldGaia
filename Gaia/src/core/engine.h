@@ -1,22 +1,19 @@
 #pragma once
 #include "gaia_pch.h"
 #include "window.h"
+#include <events/event_handler.h>
 
 namespace Gaia {
-	class Engine
-	{
+	class Engine : public EventListener{
 	public:
 		Engine();
-		virtual void run()final;
 		virtual ~Engine();
+		virtual void run()final;
+
+		void on_window_close(const WindowClose_Event & event);
 		
 	private:
+		bool m_running;
 		Window* m_window;
 	};
 }
-
-#define Gaia_API(program)\
-class program : public Gaia::Engine\
-{public:program();~program();};\
-Gaia::Engine* Gaia::create_program()\
-{static program* instance = new program(); return instance;}

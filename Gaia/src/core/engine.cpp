@@ -2,30 +2,29 @@
 #include "engine.h"
 namespace Gaia {
 	Engine::Engine()
-	{
-		// Check is application already exists
+		:m_running(true){
+		// Check if application already exists
 		static Engine* instance = nullptr;
 		GAIA_EASSERT(!instance, "Engine already created!");
 		instance = this;
-		GAIA_ELOG_TRACE("Gaia Started")
 
 		// Create window
-		m_window = Window::create("Gaia Engine", {1280, 720});
-		m_window->setup();
-
+		m_window = new Window{ "Gaia Engine", {1280, 720} };
+		// Register Window Resize Event
+		register_event(*this, &Engine::on_window_close);
 	}
 
-	Engine::~Engine()
-	{
-		GAIA_ELOG_TRACE("Gaia Ended")
+	Engine::~Engine(){
+		delete m_window;
 	}
 
-	void Engine::run()
-	{
-		int i = 0;
-		while (i++< 60000)
-		{
+	void Engine::run(){
+		while (m_running){
 			m_window->update();
 		}
+	}
+
+	void Engine::on_window_close(const WindowClose_Event & event){
+		m_running = false;
 	}
 }

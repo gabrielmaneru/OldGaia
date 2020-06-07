@@ -3,17 +3,14 @@
 #include "event_dispatcher.h"
 
 namespace Gaia{
-	EventHandler::~EventHandler()
-	{
-		for (auto& it : collection)
-		{
+	EventListener::~EventListener(){
+		for (auto& it : collection){
 			EventDispatcher::unsubscribe(*this, it.first);
 			delete it.second;
 		}
 	}
 
-	void EventHandler::handle_event(const iEvent & event)
-	{
+	void EventListener::handle_event(const iEvent & event){
 		//Tries to find the event in the Map
 		auto search = collection.find(type_of(event));
 

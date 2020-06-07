@@ -3,15 +3,12 @@
 
 namespace Gaia{
 	// Event Interface
-    class iEvent
-    {
-    public:
+    struct iEvent {
 		virtual ~iEvent() = default;
     };
 
 	// Handler Interface
-    class iHandler
-    {
+    class iHandler {
     public:
 		virtual ~iHandler() = default;
         virtual void call(const Gaia::iEvent &) = 0;
@@ -19,8 +16,7 @@ namespace Gaia{
     };
 
 	// Listener Interface
-	class iListener
-	{
+	class iListener {
 	public:
 		virtual ~iListener() = default;
 	private:

@@ -6,13 +6,12 @@
 #include <vector>
 
 namespace Gaia{
-	class EventDispatcher
-	{
+	class EventDispatcher {
 	public:
 		static void trigger_event(const iEvent &);
 
 	private:
-		friend class EventHandler;
+		friend class EventListener;
 		static void subscribe(iListener &, TypeInfo);
 		static void unsubscribe(iListener &, TypeInfo);
 		static EventDispatcher instance;

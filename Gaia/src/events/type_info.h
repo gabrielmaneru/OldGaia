@@ -3,8 +3,7 @@
 #include <string>
 
 namespace Gaia{
-    class TypeInfo
-    {
+    class TypeInfo {
     public:
         template<typename T>
 		TypeInfo(const T& t)
@@ -22,14 +21,12 @@ namespace Gaia{
     };
 
     template<typename T>
-    TypeInfo type_of(const T& t)
-    {
+    TypeInfo type_of(const T& t){
         return TypeInfo(typeid(t));
     }
     
     template<typename T>
-    TypeInfo type_of()
-    {
+    TypeInfo type_of(){
         return TypeInfo(T());
     }
 }

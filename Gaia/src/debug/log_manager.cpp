@@ -5,8 +5,7 @@
 
 namespace Gaia {
 	namespace Log {
-		void Init()
-		{
+		void Init(){
 			std::vector<spdlog::sink_ptr> log_sinks;
 			log_sinks.emplace_back(create_shared<spdlog::sinks::stdout_color_sink_mt>());
 			log_sinks[0]->set_pattern("%^[%T] %n: %v%$");

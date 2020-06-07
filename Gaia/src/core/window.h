@@ -1,18 +1,39 @@
 #pragma once
+#include <events/event_handler.h>
+
+struct GLFWwindow;
 namespace Gaia {
-	class Window
-	{
+	class Context;
+}
+
+namespace Gaia {
+	struct WindowResize_Event : public iEvent{
+		urect m_canvas;
+	};
+	struct WindowClose_Event : public iEvent {};
+
+
+	class Window : public EventListener {
 	public:
-		virtual ~Window() = default;
+		Window(const std::string & title, urect canvas);
+		~Window();
 
-		virtual void setup() = 0;
-		virtual void update() = 0;
-		virtual const std::string& get_title()const = 0;
-		virtual urect get_canvas()const = 0;
-		virtual void* get_native()const = 0;
-		virtual bool get_minimized()const = 0;
-		virtual bool get_vsync()const = 0;
+		void update();
+		const std::string& get_title()const { return m_title; };
+		urect get_canvas()const { return m_canvas; };
+		void* get_native()const { return m_native; };
+		bool get_minimized()const { return m_minimized; };
+		bool get_vsync()const { return m_vsync; };
+		void set_vsync(bool);
 
-		static Window* create(const std::string & title, urect canvas);
+		void on_window_resize(const WindowResize_Event& event);
+
+	private:
+		std::string m_title;
+		urect m_canvas;
+		GLFWwindow* m_native;
+		bool m_vsync;
+		bool m_minimized;
+		Unique<Context> m_context;
 	};
 }

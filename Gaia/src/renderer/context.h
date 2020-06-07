@@ -1,9 +1,13 @@
 #pragma once
+
+struct GLFWwindow;
 namespace Gaia {
-	class Context
-	{
+	class Context {
 	public:
-		virtual void swap_buffers() = 0;
-		static Context* create_context(void* native);
+		Context(GLFWwindow* native);
+		void swap_buffers()const;
+
+	private:
+		GLFWwindow* m_native;
 	};
 }

@@ -37,11 +37,18 @@ namespace Gaia {
 	// Smart pointer definitions
 	template<typename T>
 	using Shared = std::shared_ptr<T>;
+	template<typename T>
+	using Unique = std::unique_ptr<T>;
 
 	// Smart pointer constructor definitions
 	template<typename T, typename ... Args>
-	constexpr Shared<T> create_shared(Args&& ... args)
-	{return std::make_shared<T>(std::forward<Args>(args)...);}
+	constexpr Shared<T> create_shared(Args&& ... args){
+		return std::make_shared<T>(std::forward<Args>(args)...);
+	}
+	template<typename T, typename ... Args>
+	constexpr Unique<T> create_unique(Args&& ... args){
+		return std::make_unique<T>(std::forward<Args>(args)...);
+	}
 
 	// Type definitions
 	using u8 = unsigned char;
@@ -51,5 +58,11 @@ namespace Gaia {
 }
 
 // Asserts
-#define GAIA_ASSERT(x, ...){ if(!(x)){GAIA_LOG_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak();}}
-#define GAIA_EASSERT(x, ...){ if(!(x)){GAIA_ELOG_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak();}}
+#define GAIA_ASSERT(x, ...){ if(!(x)){\
+	GAIA_LOG_ERROR("Assertion Failed: {0}", __VA_ARGS__);\
+	__debugbreak();\
+}}
+#define GAIA_EASSERT(x, ...){ if(!(x)){\
+	GAIA_ELOG_ERROR("Assertion Failed: {0}", __VA_ARGS__);\
+	 __debugbreak();\
+}}
