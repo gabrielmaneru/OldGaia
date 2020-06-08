@@ -1,28 +1,21 @@
 workspace "Gaia"
 	architecture "x86_64"
-	startproject "Sandbox"
 
 	configurations
 	{
 		"Debug",
-		"Release",
-		"Dist"
+		"Release"
 	}
 	
-	flags
-	{
-		"MultiProcessorCompile"
-	}
+	startproject "Gaia_Sandbox"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 IncludeDir = {}
-IncludeDir["glm"] = "Gaia/extern/glm"
 IncludeDir["GLFW"] = "Gaia/extern/GLFW/include"
 IncludeDir["Glad"] = "Gaia/extern/Glad/include"
 IncludeDir["ImGui"] = "Gaia/extern/imgui"
 IncludeDir["glm"] = "Gaia/extern/glm"
-IncludeDir["stb_image"] = "Gaia/extern/stb_image"
 
 group "Extern"
 	include "Gaia/extern/GLFW"
@@ -46,29 +39,21 @@ group ""
 		files
 		{
 			"%{prj.name}/src/**.h",
-			"%{prj.name}/src/**.cpp",
-			"%{prj.name}/vendor/stb_image/**.h",
-			"%{prj.name}/vendor/stb_image/**.cpp",
-			"%{prj.name}/vendor/glm/glm/**.hpp",
-			"%{prj.name}/vendor/glm/glm/**.inl"
-		}
-
-		defines
-		{
-			"_CRT_SECURE_NO_WARNINGS",
-			"GLFW_INCLUDE_NONE",
-			"GAIA_CORE"
+			"%{prj.name}/src/**.hpp",
+			"%{prj.name}/src/**.c",
+			"%{prj.name}/src/**.cpp"
 		}
 
 		includedirs
 		{
-			"Gaia/src",
-			"Gaia/extern/spdlog/include",
+			"%{prj.name}/src",
+			"%{prj.name}/extern",
 			"%{IncludeDir.GLFW}",
 			"%{IncludeDir.Glad}",
-			"%{IncludeDir.ImGui}",
 			"%{IncludeDir.glm}",
-			"%{IncludeDir.stb_image}"
+			"%{IncludeDir.ImGui}",
+			"%{prj.name}/extern/assimp/include",
+			"%{prj.name}/extern/stb/include",
 		}
 
 		links 
@@ -94,8 +79,8 @@ group ""
 			
 		
 	
-	project "Sandbox"
-		location "Sandbox"
+	project "Gaia_Sandbox"
+		location "Gaia_Sandbox"
 		kind "ConsoleApp"
 		language "C++"
 		cppdialect "C++17"
@@ -104,29 +89,32 @@ group ""
 		targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 		objdir ("bin-obj/" .. outputdir .. "/%{prj.name}")
 
-		files
-		{
-			"%{prj.name}/src/**.h",
-			"%{prj.name}/src/**.cpp"
-		}
-
-		defines
-		{
-			"GAIA_CLIENT"
-		}
-		
-		includedirs
-		{
-			"Gaia/src",
-			"Gaia/extern",
-			"Gaia/extern/spdlog/include",
-			"%{IncludeDir.glm}"
-		}
-
 		links
 		{
 			"Gaia"
 		}
+		
+		files
+		{
+			"%{prj.name}/src/**.h",
+			"%{prj.name}/src/**.hpp",
+			"%{prj.name}/src/**.c",
+			"%{prj.name}/src/**.cpp"
+		}
+		
+		includedirs
+		{
+			"%{prj.name}/src",
+			"Gaia/src",
+			"Gaia/extern",
+			"%{IncludeDir.glm}"
+		}
+		
+		postbuildcommands 
+		{
+			'{COPY} "../%{prj.name}/assets" "%{cfg.targetdir}/assets"'
+		}
+
 
 		filter "system:windows"
 			systemversion "latest"
@@ -136,10 +124,30 @@ group ""
 			runtime "Debug"
 			symbols "on"
 
+			links
+			{
+				"Gaia/extern/assimp/bin/Debug/assimp-vc141-mtd.lib"
+			}
+
+			postbuildcommands 
+			{
+				'{COPY} "../Gaia/extern/assimp/bin/Debug/assimp-vc141-mtd.dll" "%{cfg.targetdir}"'
+			}
+
 		filter "configurations:Release"
 			defines "Gaia_RELEASE"
 			runtime "Release"
 			optimize "on"
+
+			links
+			{
+				"Gaia/extern/assimp/bin/Release/assimp-vc141-mt.lib"
+			}
+
+			postbuildcommands 
+			{
+				'{COPY} "../Gaia/extern/assimp/bin/Release/assimp-vc141-mt.dll" "%{cfg.targetdir}"'
+			}
 			
 		
 	
