@@ -34,27 +34,10 @@
 // Gaia definitions
 #include <memory>
 namespace Gaia {
-	// Smart pointer definitions
-	template<typename T>
-	using Shared = std::shared_ptr<T>;
-	template<typename T>
-	using Unique = std::unique_ptr<T>;
-
-	// Smart pointer constructor definitions
-	template<typename T, typename ... Args>
-	constexpr Shared<T> create_shared(Args&& ... args){
-		return std::make_shared<T>(std::forward<Args>(args)...);
-	}
-	template<typename T, typename ... Args>
-	constexpr Unique<T> create_unique(Args&& ... args){
-		return std::make_unique<T>(std::forward<Args>(args)...);
-	}
-
 	// Type definitions
 	using u8 = unsigned char;
 	using u32 = unsigned int;
 	using urect = struct { u32 x, y; };
-
 }
 
 // Asserts

@@ -2,12 +2,13 @@
 #include <core/definitions.h>
 
 #include <spdlog/spdlog.h>
+#include <spdlog/fmt/ostr.h>
 
 namespace Gaia {
 	namespace Log {
 		void Init();
-		extern Shared<spdlog::logger> s_engine_logger;
-		extern Shared<spdlog::logger> s_program_logger;
+		extern std::shared_ptr<spdlog::logger> s_engine_logger;
+		extern std::shared_ptr<spdlog::logger> s_program_logger;
 	}
 }
 

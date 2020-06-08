@@ -1,8 +1,9 @@
 #include "gaia_pch.h"
 #include "window.h"
-#include <renderer/context.h>
 
+#include <Glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <imgui/imgui.h>
 
 namespace Gaia{
 	static u8 s_window_count{ 0 };
@@ -18,15 +19,12 @@ namespace Gaia{
 			});
 		}
 		// Create window
-		GAIA_ELOG_INFO("Creating window \"{0}\" (x:{1}, y:{2})", title, canvas.x, canvas.y);
 		m_native = glfwCreateWindow((int)canvas.x, (int)canvas.y, title.c_str(), nullptr, nullptr);
 		++s_window_count;
 
 		// Create context
-		m_context = create_unique<Context>(m_native);
-
-		// Activate V-Sync
-		set_vsync(true);
+		glfwMakeContextCurrent(m_native);
+		GAIA_EASSERT(gladLoadGLLoader((GLADloadproc)glfwGetProcAddress), "Glad failed to initialize");
 
 		// Register Window Resize Event
 		register_event(*this, &Window::on_window_resize);
@@ -44,34 +42,97 @@ namespace Gaia{
 
 		// Set Key Callback
 		glfwSetKeyCallback(m_native, [](GLFWwindow*, int key, int, int action, int)->void {
-			//TODO
+			switch (action)
+			{
+				case GLFW_PRESS:
+				{
+					KeyPressed_Event event;
+					event.m_key = key;
+					event.m_repeat = 0;
+					EventDispatcher::trigger_event(event);
+					break;
+				}
+				case GLFW_RELEASE:
+				{
+					KeyReleased_Event event;
+					event.m_key = key;
+					EventDispatcher::trigger_event(event);
+					break;
+				}
+				case GLFW_REPEAT:
+				{
+					KeyPressed_Event event;
+					event.m_key = key;
+					event.m_repeat = 1;
+					EventDispatcher::trigger_event(event);
+					break;
+				}
+			}
 		});
 		// Set Char Key Callback
 		glfwSetCharCallback(m_native, [](GLFWwindow*, u32 key)->void {
-			//TODO
+			KeyTyped_Event event;
+			event.m_key = (int)key;
+			EventDispatcher::trigger_event(event);
 		});
 		// Set Mouse Button Callback
 		glfwSetMouseButtonCallback(m_native, [](GLFWwindow* window, int button, int action, int) {
-			//TODO
+			switch (button)
+			{
+				case GLFW_PRESS:
+				{
+					MousePressed_Event event;
+					event.m_button = button;
+					EventDispatcher::trigger_event(event);
+					break;
+				}
+				case GLFW_RELEASE:
+				{
+					MouseReleased_Event event;
+					event.m_button = button;
+					EventDispatcher::trigger_event(event);
+					break;
+				}
+			}
 		});
 		// Set Scroll Callback
 		glfwSetScrollCallback(m_native, [](GLFWwindow* window, double xOff, double yOff) {
-			//TODO
+			MouseScrolled_Event event;
+			event.m_xOff = xOff;
+			event.m_yOff = yOff;
+			EventDispatcher::trigger_event(event);
 		});
 		// Set Cursor Pos Callback
 		glfwSetCursorPosCallback(m_native, [](GLFWwindow* window, double x, double y) {
-			//TODO
+			MouseMoved_Event event;
+			event.m_x = x;
+			event.m_y = y;
+			EventDispatcher::trigger_event(event);
 		});
 
+		// Create ImGui cursors
+		m_cursors[ImGuiMouseCursor_Arrow] = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
+		m_cursors[ImGuiMouseCursor_TextInput] = glfwCreateStandardCursor(GLFW_IBEAM_CURSOR);
+		m_cursors[ImGuiMouseCursor_ResizeAll] = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
+		m_cursors[ImGuiMouseCursor_ResizeNS] = glfwCreateStandardCursor(GLFW_VRESIZE_CURSOR);
+		m_cursors[ImGuiMouseCursor_ResizeEW] = glfwCreateStandardCursor(GLFW_HRESIZE_CURSOR);
+		m_cursors[ImGuiMouseCursor_ResizeNESW] = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
+		m_cursors[ImGuiMouseCursor_ResizeNWSE] = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
+		m_cursors[ImGuiMouseCursor_Hand] = glfwCreateStandardCursor(GLFW_HAND_CURSOR);
+
+		// Maximize Window
+		glfwMaximizeWindow(m_native);
+		{
+			int width, height;
+			glfwGetWindowSize(m_native, &width, &height);
+			m_canvas = { (u32)width, (u32)height };
+		}
 	}
 	Window::~Window() {
-		GAIA_ELOG_TRACE("Destoying window");
 		glfwDestroyWindow(m_native);
 
-		if (--s_window_count == 0) {
-			GAIA_ELOG_TRACE("Terminating GLFW");
+		if (--s_window_count == 0)
 			glfwTerminate();
-		}
 	}
 	void Window::update() {
 		glfwPollEvents();

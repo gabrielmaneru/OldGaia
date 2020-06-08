@@ -1,6 +1,6 @@
 # Binaries
-**/bin/
-bin-obj/
+build-bin
+build-obj
 
 # Visual Studio files
 .vs/
@@ -9,3 +9,5 @@ bin-obj/
 **.vcxproj.filters
 **.vcxproj.user
 
+
+*.ini

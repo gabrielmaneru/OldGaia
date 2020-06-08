@@ -1,17 +1,19 @@
 #pragma once
-#include <events/event_handler.h>
+#include <events/event_listener.h>
 
 struct GLFWwindow;
-namespace Gaia {
-	class Context;
-}
+struct GLFWcursor;
 
 namespace Gaia {
-	struct WindowResize_Event : public iEvent{
-		urect m_canvas;
-	};
-	struct WindowClose_Event : public iEvent {};
-
+	struct WindowResize_Event   : public iEvent { urect m_canvas; };
+	struct WindowClose_Event    : public iEvent {};
+	struct KeyPressed_Event     : public iEvent { int m_key, m_repeat; };
+	struct KeyReleased_Event    : public iEvent { int m_key; };
+	struct KeyTyped_Event       : public iEvent { int m_key; };
+	struct MousePressed_Event   : public iEvent { int m_button; };
+	struct MouseReleased_Event : public iEvent { int m_button; };
+	struct MouseScrolled_Event : public iEvent { double m_xOff, m_yOff; };
+	struct MouseMoved_Event  : public iEvent { double m_x, m_y; };
 
 	class Window : public EventListener {
 	public:
@@ -32,8 +34,8 @@ namespace Gaia {
 		std::string m_title;
 		urect m_canvas;
 		GLFWwindow* m_native;
+		GLFWcursor* m_cursors[8];
 		bool m_vsync;
 		bool m_minimized;
-		Unique<Context> m_context;
 	};
 }
