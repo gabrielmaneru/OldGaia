@@ -2,6 +2,7 @@
 #include "gaia_pch.h"
 #include <core/window.h>
 #include <core/layer.h>
+#include <renderer/renderer.h>
 #include <editor/editor.h>
 #include <events/event_listener.h>
 
@@ -13,12 +14,10 @@ namespace Gaia {
 
 		void run();
 		template<typename L>
-		void add_layer(L*p) {
-			m_layers.emplace_back(std::unique_ptr<L>(p));
+		void add_layer(std::shared_ptr<L>&& p) {
+			m_layers.emplace_back(p);
 		}
-		static Engine * get();
-		Window * get_window() { return m_window; }
-		LayerList& get_layers() { return m_layers; }
+		void run_layers(std::function<void(std::shared_ptr<Layer>)> func);
 
 		void on_window_close(const WindowClose_Event & event);
 
@@ -26,7 +25,13 @@ namespace Gaia {
 	private:
 		bool m_running;
 		Window* m_window;
+		Renderer* m_renderer;
 		Editor* m_editor;
 		LayerList m_layers;
+
+	public:
+		static Engine* get();
+		static Window* get_window();
+		static Renderer* get_renderer();
 	};
 }

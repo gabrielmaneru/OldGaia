@@ -9,6 +9,7 @@ namespace Gaia {
 		~ImGuiLayer();
 
 		void render_begin();
+		void render_editor()override;
 		void render_end();
 	};
 }

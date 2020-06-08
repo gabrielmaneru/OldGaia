@@ -42,10 +42,10 @@ namespace Gaia {
 
 // Asserts
 #define GAIA_ASSERT(x, ...){ if(!(x)){\
-	GAIA_LOG_ERROR("Assertion Failed: {0}", __VA_ARGS__);\
+	GAIA_LOG_CRITICAL("Assertion Failed: {0}", __VA_ARGS__);\
 	__debugbreak();\
 }}
 #define GAIA_EASSERT(x, ...){ if(!(x)){\
-	GAIA_ELOG_ERROR("Assertion Failed: {0}", __VA_ARGS__);\
+	GAIA_ELOG_CRITICAL("Assertion Failed: {0}", __VA_ARGS__);\
 	 __debugbreak();\
 }}

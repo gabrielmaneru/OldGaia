@@ -16,5 +16,5 @@ namespace Gaia {
 	protected:
 		std::string m_name;
 	};
-	using LayerList = std::list< std::unique_ptr<Layer> >;
+	using LayerList = std::list< std::shared_ptr<Layer> >;
 }

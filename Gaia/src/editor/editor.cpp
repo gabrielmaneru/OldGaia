@@ -6,22 +6,22 @@
 namespace Gaia {
 	Editor::Editor()
 	{
-		m_layer = new ImGuiLayer();
-		// Transfer Ownership
-		Engine::get()->add_layer(m_layer);
+		std::shared_ptr<ImGuiLayer> p(new ImGuiLayer());
+		m_layer = std::weak_ptr(p);
+		// Transfer Ownership to the engine
+		Engine::get()->add_layer(std::move(p));
 	}
 	Editor::~Editor()
 	{
-		m_layer = nullptr;
 	}
 	void Editor::render()
 	{
-		m_layer->render_begin();
-
-		//auto layers = Engine::get()->get_layers();
-		//for (auto it = layers.begin(); it != layers.end(); it++)
-		//	(*it)->render_editor();
-
-		m_layer->render_end();
+		if (auto p = m_layer.lock())
+		{
+			p->render_begin();
+			Engine::get()->run_layers([](std::shared_ptr<Layer> pL)->void
+			{ pL->render_editor(); });
+			p->render_end();
+		}
 	}
 }

@@ -81,10 +81,6 @@ project "Gaia"
 		defines "HZ_RELEASE"
 		optimize "On"
 
-	filter "configurations:Dist"
-		defines "HZ_DIST"
-		optimize "On"
-
 project "Gaia_Sandbox"
 	location "Gaia_Sandbox"
 	kind "ConsoleApp"
@@ -92,6 +88,7 @@ project "Gaia_Sandbox"
 	cppdialect "C++17"
 	staticruntime "on"
 	
+	debugdir ("build-bin/" .. outputdir .. "/%{prj.name}")
 	targetdir ("build-bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("build-obj/" .. outputdir .. "/%{prj.name}")
 
@@ -118,6 +115,7 @@ project "Gaia_Sandbox"
 
 	postbuildcommands 
 	{
+		'{COPY} "../Gaia/assets" "%{cfg.targetdir}/assets"',
 		'{COPY} "../Gaia_Sandbox/assets" "%{cfg.targetdir}/assets"'
 	}
 	
@@ -155,19 +153,5 @@ project "Gaia_Sandbox"
 		postbuildcommands 
 		{
 			'{COPY} "../Gaia/extern/assimp/bin/Release/assimp-vc141-mt.dll" "%{cfg.targetdir}"'
-		}
-
-	filter "configurations:Dist"
-		defines "HZ_DIST"
-		optimize "on"
-
-		links
-		{
-			"Gaia/extern/assimp/bin/Release/assimp-vc141-mt.lib"
-		}
-
-		postbuildcommands 
-		{
-			'{COPY} "../Gaia/extern/assimp/bin/Release/assimp-vc141-mtd.dll" "%{cfg.targetdir}"'
 		}
 		
