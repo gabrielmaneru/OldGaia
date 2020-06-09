@@ -5,8 +5,8 @@ struct GLFWwindow;
 struct GLFWcursor;
 
 namespace Gaia {
-	struct WindowResize_Event   : public iEvent { urect m_canvas; };
-	struct WindowClose_Event    : public iEvent {};
+	struct WindowResize_Event : public iEvent { urect m_canvas; };
+	struct WindowClose_Event : public iEvent {};
 	struct KeyPressed_Event     : public iEvent { int m_key, m_repeat; };
 	struct KeyReleased_Event    : public iEvent { int m_key; };
 	struct KeyTyped_Event       : public iEvent { int m_key; };

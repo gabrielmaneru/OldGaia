@@ -5,8 +5,7 @@ workspace "Gaia"
 	configurations 
 	{ 
 		"Debug", 
-		"Release",
-		"Dist"
+		"Release"
 	}
 
 	startproject "Gaia_Sandbox"
@@ -66,19 +65,17 @@ project "Gaia"
 	
 	filter "system:windows"
 		systemversion "latest"
-		
 		defines 
 		{ 
-			"HZ_PLATFORM_WINDOWS",
-			"HZ_BUILD_DLL"
+			"_CRT_SECURE_NO_WARNINGS"
 		}
+		
 
 	filter "configurations:Debug"
-		defines "HZ_DEBUG"
+		defines "GAIA_DEBUG"
 		symbols "On"
 				
 	filter "configurations:Release"
-		defines "HZ_RELEASE"
 		optimize "On"
 
 project "Gaia_Sandbox"
@@ -87,6 +84,7 @@ project "Gaia_Sandbox"
 	language "C++"
 	cppdialect "C++17"
 	staticruntime "on"
+	ignoredefaultlibraries { "libcmt" }
 	
 	debugdir ("build-bin/" .. outputdir .. "/%{prj.name}")
 	targetdir ("build-bin/" .. outputdir .. "/%{prj.name}")
@@ -121,14 +119,9 @@ project "Gaia_Sandbox"
 	
 	filter "system:windows"
 		systemversion "latest"
-				
-		defines 
-		{ 
-			"HZ_PLATFORM_WINDOWS"
-		}
 	
 	filter "configurations:Debug"
-		defines "HZ_DEBUG"
+		defines "GAIA_DEBUG"
 		symbols "on"
 
 		links
@@ -142,7 +135,6 @@ project "Gaia_Sandbox"
 		}
 				
 	filter "configurations:Release"
-		defines "HZ_RELEASE"
 		optimize "on"
 
 		links

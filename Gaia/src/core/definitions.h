@@ -37,7 +37,12 @@ namespace Gaia {
 	// Type definitions
 	using u8 = unsigned char;
 	using u32 = unsigned int;
-	using urect = struct { u32 x, y; };
+	struct urect{
+		u32 x, y;
+		bool operator==(const urect& r)const {
+			return x == r.x&&y == r.y;
+		}
+	};
 }
 
 // Asserts

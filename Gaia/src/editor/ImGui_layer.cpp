@@ -8,6 +8,7 @@
 #include <examples/imgui_impl_opengl3.h>
 #include <GLFW/glfw3.h>
 
+#pragma warning( disable : 4312 ) // Conversion of different sizes from u32 to void*
 
 namespace Gaia {
 	ImGuiLayer::ImGuiLayer()
@@ -321,7 +322,8 @@ namespace Gaia {
 		//SceneRenderer::SetViewportSize((uint32_t)viewportSize.x, (uint32_t)viewportSize.y);
 		//m_ActiveScene->GetCamera().SetProjectionMatrix(glm::perspectiveFov(glm::radians(45.0f), viewportSize.x, viewportSize.y, 0.1f, 10000.0f));
 		//m_ActiveScene->GetCamera().SetViewportSize((uint32_t)viewportSize.x, (uint32_t)viewportSize.y);
-		//ImGui::Image((void*)SceneRenderer::GetFinalColorBufferRendererID(), viewportSize, { 0, 1 }, { 1, 0 });
+		
+		ImGui::Image((ImTextureID)Engine::get_renderer()->get_final_texture_id(), viewportSize, { 0, 1 }, { 1, 0 });
 
 		static int counter = 0;
 		auto windowSize = ImGui::GetWindowSize();
