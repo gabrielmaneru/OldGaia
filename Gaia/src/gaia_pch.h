@@ -3,7 +3,6 @@
 #include <utility>
 #include <algorithm>
 #include <functional>
-
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -11,6 +10,9 @@
 #include <array>
 #include <vector>
 
+#include <glm/glm.hpp>
+
+#include <core/definitions.h>
 #include <debug/log_manager.h>
 
 namespace Gaia {

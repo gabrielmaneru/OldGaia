@@ -17,7 +17,7 @@ namespace Gaia {
 		void add_layer(std::shared_ptr<L>&& p) {
 			m_layers.emplace_back(p);
 		}
-		void run_layers(std::function<void(std::shared_ptr<Layer>)> func);
+		void run_command(LayerCommand cmd);
 
 		void on_window_close(const WindowClose_Event & event);
 

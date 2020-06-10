@@ -36,20 +36,25 @@ namespace Gaia {
 	}
 
 	void Engine::run(){
+		run_command(&Layer::begin);
+
 		while (m_running){
 			if (!m_window->get_minimized())
 			{
+				run_command(&Layer::update);
 				m_renderer->render();
 				m_editor->render();
 			}
 			m_window->update();
 		}
+
+		run_command(&Layer::end);
 	}
 
-	void Engine::run_layers(std::function<void(std::shared_ptr<Layer>)> func)
+	void Engine::run_command(LayerCommand cmd)
 	{
 		for (auto l : m_layers)
-			func(l);
+			((*l).*cmd)();
 	}
 
 	void Engine::on_window_close(const WindowClose_Event & event){

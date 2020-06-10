@@ -11,7 +11,7 @@ namespace Gaia{
     class iHandler {
     public:
 		virtual ~iHandler() = default;
-        virtual void call(const Gaia::iEvent &) = 0;
+        virtual void call(const iEvent &) = 0;
 		virtual void handle(const iEvent & e) final { call(e); };
     };
 

@@ -19,8 +19,7 @@ namespace Gaia {
 		if (auto p = m_layer.lock())
 		{
 			p->render_begin();
-			Engine::get()->run_layers([](std::shared_ptr<Layer> pL)->void
-			{ pL->render_editor(); });
+			Engine::get()->run_command(&Layer::render_editor);
 			p->render_end();
 		}
 	}

@@ -17,4 +17,5 @@ namespace Gaia {
 		std::string m_name;
 	};
 	using LayerList = std::list< std::shared_ptr<Layer> >;
+	using LayerCommand = void(Layer::*)(void);
 }

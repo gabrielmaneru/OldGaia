@@ -1,5 +1,4 @@
 #pragma once
-
 // Core
 #include <core/definitions.h>
 #include <core/engine.h>

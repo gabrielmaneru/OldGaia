@@ -11,8 +11,7 @@
 #pragma warning( disable : 4312 ) // Conversion of different sizes from u32 to void*
 
 namespace Gaia {
-	ImGuiLayer::ImGuiLayer()
-		:Layer("ImGui")
+	void ImGuiLayer::begin()
 	{
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
@@ -47,20 +46,6 @@ namespace Gaia {
 		// Setup Platform/Renderer bindings
 		ImGui_ImplGlfw_InitForOpenGL(window, true);
 		ImGui_ImplOpenGL3_Init("#version 410");
-	}
-	ImGuiLayer::~ImGuiLayer()
-	{
-		ImGui_ImplOpenGL3_Shutdown();
-		ImGui_ImplGlfw_Shutdown();
-		ImGui::DestroyContext();
-	}
-	void ImGuiLayer::render_begin()
-	{
-		ImGui_ImplOpenGL3_NewFrame();
-		ImGui_ImplGlfw_NewFrame();
-		ImGui::NewFrame();
-		//TODO ImGuizmo::BeginFrame();
-		//ImGui::ShowDemoWindow();
 	}
 	void ImGuiLayer::render_editor()
 	{
@@ -390,6 +375,21 @@ namespace Gaia {
 		//m_SceneHierarchyPanel->OnImGuiRender();
 
 		ImGui::End();
+	}
+	void ImGuiLayer::end()
+	{
+		ImGui_ImplOpenGL3_Shutdown();
+		ImGui_ImplGlfw_Shutdown();
+		ImGui::DestroyContext();
+	}
+
+	void ImGuiLayer::render_begin()
+	{
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplGlfw_NewFrame();
+		ImGui::NewFrame();
+		//TODO ImGuizmo::BeginFrame();
+		//ImGui::ShowDemoWindow();
 	}
 	void ImGuiLayer::render_end()
 	{
