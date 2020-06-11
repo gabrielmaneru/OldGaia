@@ -1,5 +1,5 @@
 #pragma once
-#include "type_info.h"
+#include <core/type_info.h>
 
 namespace Gaia{
 	// Event Interface

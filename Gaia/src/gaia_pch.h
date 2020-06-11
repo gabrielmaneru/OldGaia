@@ -9,10 +9,13 @@
 #include <list>
 #include <array>
 #include <vector>
+#include <map>
+#include <set>
 
 #include <glm/glm.hpp>
 
 #include <core/definitions.h>
+#include <core/type_info.h>
 #include <debug/log_manager.h>
 
 namespace Gaia {

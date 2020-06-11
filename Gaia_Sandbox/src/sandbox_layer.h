@@ -5,8 +5,7 @@
 class SandboxLayer : public Gaia::Layer
 {
 public:
-	SandboxLayer()
-		:Gaia::Layer("Sandbox") {}
+	SandboxLayer() : Gaia::Layer("Sandbox") {}
 	virtual ~SandboxLayer() = default;
 
 	void begin()override;
@@ -14,7 +13,6 @@ public:
 	void render_editor() override;
 	void end() override;
 
-
 private:
-	 
+	Gaia::Scene* m_scene;
 };

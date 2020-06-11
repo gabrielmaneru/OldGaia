@@ -1,9 +1,6 @@
 #pragma once
-#include "type_info.h"
-#include "event_interfaces.h"
-
-#include <map>
-#include <vector>
+#include <core/type_info.h>
+#include <events/event_interfaces.h>
 
 namespace Gaia{
 	class EventDispatcher {

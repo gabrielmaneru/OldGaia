@@ -1,6 +1,5 @@
 #include "gaia_pch.h"
 #include "event_listener.h"
-#include "event_dispatcher.h"
 
 namespace Gaia{
 	EventListener::~EventListener(){

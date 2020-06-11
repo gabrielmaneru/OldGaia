@@ -5,7 +5,7 @@ namespace Gaia {
 	Engine * instance = nullptr;
 
 	Engine::Engine()
-		:m_running(true){
+		:m_running(true), m_active_scene(nullptr) {
 		// Check if application already exists
 		GAIA_EASSERT(!instance, "Engine already created!");
 		instance = this;
@@ -21,7 +21,7 @@ namespace Gaia {
 			m_renderer = new Renderer();
 
 			// Create editor
-			m_editor = new Editor{};
+			m_editor = new Editor();
 		}
 		GAIA_ELOG_TRACE("Engine Initialize Succesfully"); std::cout << std::endl;
 	}
@@ -74,7 +74,7 @@ namespace Gaia {
 	Renderer * Engine::get_renderer()
 	{
 		Renderer* w = get()->m_renderer;
-		GAIA_EASSERT(w, "Invalid Window Access");
+		GAIA_EASSERT(w, "Invalid Renderer Access");
 		return w;
 	}
 }

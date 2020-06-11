@@ -1,5 +1,6 @@
 #include "gaia_pch.h"
 #include "event_dispatcher.h"
+
 namespace Gaia { 
 	EventDispatcher EventDispatcher::instance = {};
 

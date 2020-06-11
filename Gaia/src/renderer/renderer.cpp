@@ -89,6 +89,24 @@ namespace Gaia {
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
 
+	void Renderer::register_renderable(Renderable * p)
+	{
+		auto res = m_renderables.find(p);
+		if (res != m_renderables.end())
+			GAIA_ELOG_WARN("Renderable already registered");
+		else
+			m_renderables.emplace(p);
+	}
+
+	void Renderer::unregister_renderable(Renderable * p)
+	{
+		auto res = m_renderables.find(p);
+		if (res != m_renderables.end())
+			m_renderables.erase(res);
+		else
+			GAIA_ELOG_WARN("Invalid Renderable Unregister");
+	}
+
 	u32 Renderer::get_final_texture_id() const
 	{
 		return m_fb->get_txt_id(0);

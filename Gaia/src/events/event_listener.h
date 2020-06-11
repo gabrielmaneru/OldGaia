@@ -1,9 +1,7 @@
 #pragma once
-#include "type_info.h"
-#include "event_interfaces.h"
-#include "event_dispatcher.h"
-
-#include <map>
+#include <core/type_info.h>
+#include <events/event_interfaces.h>
+#include <events/event_dispatcher.h>
 
 namespace Gaia {
 	// Handle for registering events on EventHandlers

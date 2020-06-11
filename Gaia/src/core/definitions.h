@@ -31,9 +31,25 @@
 	#error "Unknown platform!"
 #endif
 
-// Gaia definitions
+// Include GLM
+#define GLM_FORCE_XYZW_ONLY
 #include <glm/glm.hpp>
+
+// Gaia definitions
+#include <memory>
 namespace Gaia {
+	template<typename T>
+	using unique = std::unique_ptr<T>;
+	template<typename T>
+	using shared = std::shared_ptr<T>;
+	template<typename T, typename ... Args>
+	constexpr unique<T> new_unique(Args&&... args)
+	{return std::make_unique<T>(std::forward<Args>(args)...);}
+	template<typename T, typename ... Args>
+	constexpr shared<T> new_shared(Args&&... args)
+	{return std::make_shared<T>(std::forward<Args>(args)...);}
+
+
 	// Type definitions
 	using u8 = unsigned char;
 	using u32 = unsigned int;
