@@ -1,5 +1,5 @@
 #pragma once
-#include <scene/component.h>
+#include <components/component.h>
 
 namespace Gaia {
 	class Entity {

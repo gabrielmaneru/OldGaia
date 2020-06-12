@@ -1,5 +1,5 @@
 #pragma once
-#include <scene/component.h>
+#include <components/component.h>
 #include <renderer/renderable.h>
 
 namespace Gaia {

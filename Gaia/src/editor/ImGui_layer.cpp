@@ -93,19 +93,19 @@ namespace Gaia {
 		// Editor Panel ------------------------------------------------------------------------------
 		ImGui::Begin("Model");
 
-		ImGui::Begin("Environment");
-
-		if (ImGui::Button("Load Environment Map"))
-		{
-			//std::string filename = Application::Get().OpenFile("*.hdr");
-			//if (filename != "")
-			//	m_ActiveScene->SetEnvironment(Environment::Load(filename));
-		}
+		//ImGui::Begin("Environment");
+		//
+		//if (ImGui::Button("Load Environment Map"))
+		//{
+		//	//std::string filename = Application::Get().OpenFile("*.hdr");
+		//	//if (filename != "")
+		//	//	m_ActiveScene->SetEnvironment(Environment::Load(filename));
+		//}
 
 		//ImGui::SliderFloat("Skybox LOD", &m_Scene->GetSkyboxLod(), 0.0f, 11.0f);
 
-		ImGui::Columns(2);
-		ImGui::AlignTextToFramePadding();
+		//ImGui::Columns(2);
+		//ImGui::AlignTextToFramePadding();
 
 		//auto& light = m_Scene->GetLight();
 		//Property("Light Direction", light.Direction);
@@ -121,20 +121,20 @@ namespace Gaia {
 		//if (m_UIShowBoundingBoxes && Property("On Top", m_UIShowBoundingBoxesOnTop))
 		//	ShowBoundingBoxes(m_UIShowBoundingBoxes, m_UIShowBoundingBoxesOnTop);
 
-		ImGui::Columns(1);
-
-		ImGui::End();
-
-		ImGui::Separator();
-		{
-			ImGui::Text("Mesh");
+		//ImGui::Columns(1);
+		//
+		//ImGui::End();
+		//
+		//ImGui::Separator();
+		//{
+		//	ImGui::Text("Mesh");
 			//auto mesh = m_MeshEntity->GetMesh();
 			//std::string fullpath = mesh ? mesh->GetFilePath() : "None";
 			//size_t found = fullpath.find_last_of("/\\");
 			//std::string path = found != std::string::npos ? fullpath.substr(found + 1) : fullpath;
-			ImGui::Text("path"/*path.c_str()*/); ImGui::SameLine();
-			if (ImGui::Button("...##Mesh"))
-			{
+			//ImGui::Text("path"/*path.c_str()*/); ImGui::SameLine();
+			//if (ImGui::Button("...##Mesh"))
+			//{
 				//std::string filename = Application::Get().OpenFile("");
 				//if (filename != "")
 				//{
@@ -143,9 +143,9 @@ namespace Gaia {
 				//	// m_MeshEntity->SetMaterial(m_MeshMaterial);
 				//	m_MeshEntity->SetMesh(newMesh);
 				//}
-			}
-		}
-		ImGui::Separator();
+		//	}
+		//}
+		//ImGui::Separator();
 
 		// Textures ------------------------------------------------------------------------------
 		{/*
@@ -278,8 +278,8 @@ namespace Gaia {
 			}*/
 		}
 
-		ImGui::Separator();
-
+		//ImGui::Separator();
+		/*
 		if (ImGui::TreeNode("Shaders"))
 		{
 			//auto& shaders = Shader::s_AllShaders;
@@ -296,7 +296,7 @@ namespace Gaia {
 			ImGui::TreePop();
 		}
 
-
+		*/
 		ImGui::End();
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
@@ -309,14 +309,14 @@ namespace Gaia {
 		//m_ActiveScene->GetCamera().SetViewportSize((uint32_t)viewportSize.x, (uint32_t)viewportSize.y);
 		
 		ImGui::Image((ImTextureID)Engine::get_renderer()->get_final_texture_id(), viewportSize, { 0, 1 }, { 1, 0 });
-
+		/*
 		static int counter = 0;
 		auto windowSize = ImGui::GetWindowSize();
 		ImVec2 minBound = ImGui::GetWindowPos();
 		minBound.x += viewportOffset.x;
 		minBound.y += viewportOffset.y;
 
-		ImVec2 maxBound = { minBound.x + windowSize.x, minBound.y + windowSize.y };
+		ImVec2 maxBound = { minBound.x + windowSize.x, minBound.y + windowSize.y };*/
 		//m_ViewportBounds[0] = { minBound.x, minBound.y };
 		//m_ViewportBounds[1] = { maxBound.x, maxBound.y };
 		//m_AllowViewportCameraEvents = ImGui::IsMouseHoveringRect(minBound, maxBound);
@@ -345,20 +345,20 @@ namespace Gaia {
 
 		if (ImGui::BeginMenuBar())
 		{
-			if (ImGui::BeginMenu("Docking"))
+			if (ImGui::BeginMenu("File"))
 			{
 				// Disabling fullscreen would allow the window to be moved to the front of other windows, 
 				// which we can't undo at the moment without finer window depth/z control.
 				//ImGui::MenuItem("Fullscreen", NULL, &opt_fullscreen_persistant);
-
-				if (ImGui::MenuItem("Flag: NoSplit", "", (opt_flags & ImGuiDockNodeFlags_NoSplit) != 0))                 opt_flags ^= ImGuiDockNodeFlags_NoSplit;
+				//if (ImGui::MenuItem("Open");
+				/*if (ImGui::MenuItem("Flag: NoSplit", "", (opt_flags & ImGuiDockNodeFlags_NoSplit) != 0))                 opt_flags ^= ImGuiDockNodeFlags_NoSplit;
 				if (ImGui::MenuItem("Flag: NoDockingInCentralNode", "", (opt_flags & ImGuiDockNodeFlags_NoDockingInCentralNode) != 0))  opt_flags ^= ImGuiDockNodeFlags_NoDockingInCentralNode;
 				if (ImGui::MenuItem("Flag: NoResize", "", (opt_flags & ImGuiDockNodeFlags_NoResize) != 0))                opt_flags ^= ImGuiDockNodeFlags_NoResize;
 				//if (ImGui::MenuItem("Flag: PassthruDockspace", "", (opt_flags & ImGuiDockNodeFlags_PassthruDockspace) != 0))       opt_flags ^= ImGuiDockNodeFlags_PassthruDockspace;
 				if (ImGui::MenuItem("Flag: AutoHideTabBar", "", (opt_flags & ImGuiDockNodeFlags_AutoHideTabBar) != 0))          opt_flags ^= ImGuiDockNodeFlags_AutoHideTabBar;
 				ImGui::Separator();
 				if (ImGui::MenuItem("Close DockSpace", NULL, false, p_open != NULL))
-					p_open = false;
+					p_open = false;*/
 				ImGui::EndMenu();
 			}
 			/*ImGuiShowHelpMarker(

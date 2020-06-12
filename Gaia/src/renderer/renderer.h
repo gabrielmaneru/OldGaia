@@ -13,8 +13,7 @@ namespace Gaia {
 		void unregister_renderable(Renderable*);
 
 		u32 get_final_texture_id()const;
-
-
+		
 	private:
 		std::set<Renderable*> m_renderables;
 		Shader* m_shader_debug;
