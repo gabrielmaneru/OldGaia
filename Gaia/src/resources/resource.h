@@ -19,7 +19,6 @@ namespace Gaia {
 		virtual bool load_internal() { return true; }
 		virtual bool unload_internal() { return true; }
 
-	private:
 		bool m_loaded;
 		std::string m_path;
 		std::string m_name;

@@ -1,8 +1,8 @@
 #pragma once
-#include <renderer/texture2D.h>
+#include <renderer/texture.h>
 
 namespace Gaia {
-	using FramebufferProperties = std::vector<TextureProperties>;
+	using FramebufferProperties = std::vector<TextureProps>;
 
 	class Framebuffer {
 	public:
@@ -21,6 +21,6 @@ namespace Gaia {
 		u32 m_id;
 		urect m_size;
 		FramebufferProperties m_properties;
-		std::vector<Texture2D*> m_draw_textures;
+		std::vector<Texture*> m_draw_textures;
 	};
 }

@@ -19,7 +19,9 @@ namespace Gaia {
 			free();
 
 		for (auto t : m_properties)
-			m_draw_textures.push_back(new Texture2D(m_size, t));
+		{
+			m_draw_textures.push_back(new Texture(m_size, t));
+		}
 
 		glGenFramebuffers(1, &m_id);
 		glBindFramebuffer(GL_FRAMEBUFFER, m_id);
@@ -27,7 +29,7 @@ namespace Gaia {
 		std::vector<u32> draw_buffers;
 		for (u32 i = 0; i <m_draw_textures.size(); ++i)
 		{
-			Texture2D& t = *m_draw_textures[i];
+			Texture& t = *m_draw_textures[i];
 			if (t.is_color())
 			{
 				u32 color_attach = GL_COLOR_ATTACHMENT0 + (u32)draw_buffers.size();

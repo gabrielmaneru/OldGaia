@@ -35,7 +35,7 @@ namespace Gaia {
 		GAIA_ELOG_INFO("Vendor: {0}", (const char*)glGetString(GL_VENDOR));
 		GAIA_ELOG_INFO("Renderer: {0}", (const char*)glGetString(GL_RENDERER));
 		GAIA_ELOG_INFO("Version: {0}", (const char*)glGetString(GL_VERSION));
-		glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY, &TextureProperties::max_anisotropy);
+		glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY, &TextureProps::max_anisotropy);
 
 		m_shader_debug = new Shader("Debug",
 			std::vector<std::string>{
@@ -44,8 +44,8 @@ namespace Gaia {
 		});
 		m_fb = new Framebuffer(Engine::get_window()->get_canvas(),
 			FramebufferProperties{
-				TextureProperties::default_color,
-				TextureProperties::default_depth
+				TextureProps::default_color,
+				TextureProps::default_depth
 			});
 
 		float vertices[] = {
