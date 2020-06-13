@@ -1,5 +1,6 @@
 #include "gaia_pch.h"
 #include "shader.h"
+#include <utils/path_utils.h>
 
 #include <Glad/glad.h>
 

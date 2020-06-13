@@ -100,9 +100,16 @@ namespace Gaia {
 		glTextureParameterf(m_id, GL_TEXTURE_MAX_ANISOTROPY, m_properties.max_anisotropy);
 	}
 
-	TextureProps Texture::default_color = TextureProps(
+	TextureProps Texture::default_color_rgba = TextureProps(
 		e_InternalFormat::RGBA,
 		e_PixelFormat::RGBA,
+		e_DataType::UnsignedByte,
+		e_Wrap::Clamp,
+		e_Filter::Nearest, e_Filter::Nearest);
+
+	TextureProps Texture::default_color_rgb = TextureProps(
+		e_InternalFormat::RGB,
+		e_PixelFormat::RGB,
 		e_DataType::UnsignedByte,
 		e_Wrap::Clamp,
 		e_Filter::Nearest, e_Filter::Nearest);

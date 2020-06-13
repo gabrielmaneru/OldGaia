@@ -24,7 +24,7 @@ namespace Gaia {
 
 	class Texture {
 	public:
-		Texture() : m_id(0), m_properties(default_color) {}
+		Texture() : m_id(0), m_properties(default_color_rgba) {}
 		Texture(urect size, const TextureProps& props);
 		virtual ~Texture();
 
@@ -32,7 +32,8 @@ namespace Gaia {
 		u32 get_id()const { return m_id; }
 		bool is_color()const;
 
-		static TextureProps default_color;
+		static TextureProps default_color_rgba;
+		static TextureProps default_color_rgb;
 		static TextureProps default_depth;
 
 	protected:

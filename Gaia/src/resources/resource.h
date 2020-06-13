@@ -1,11 +1,13 @@
 #pragma once
+#include <resources/extension.h>
 
 namespace Gaia {
+
 	class Resource
 	{
 	public:
 		Resource(const Resource&) = delete;
-		Resource(const std::string& path);
+		Resource(const std::string& path, const e_Extension);
 
 		void load();
 		void unload();
@@ -22,5 +24,6 @@ namespace Gaia {
 		bool m_loaded;
 		std::string m_path;
 		std::string m_name;
+		e_Extension m_extension;
 	};
 }

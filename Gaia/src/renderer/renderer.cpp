@@ -44,8 +44,8 @@ namespace Gaia {
 		});
 		m_fb = new Framebuffer(Engine::get_window()->get_canvas(),
 			FramebufferProperties{
-				TextureProps::default_color,
-				TextureProps::default_depth
+				Texture::default_color_rgba,
+				Texture::default_depth
 			});
 
 		float vertices[] = {
@@ -109,6 +109,7 @@ namespace Gaia {
 
 	u32 Renderer::get_final_texture_id() const
 	{
+		return Engine::get_resources()->get<Texture2D>("error")->get_id();
 		return m_fb->get_txt_id(0);
 	}
 }

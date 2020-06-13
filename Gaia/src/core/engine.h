@@ -3,6 +3,7 @@
 #include <core/layer.h>
 #include <core/window.h>
 #include <renderer/renderer.h>
+#include <resources/resource_manager.h>
 #include <editor/editor.h>
 #include <scene/scene.h>
 #include <events/event_listener.h>
@@ -28,6 +29,7 @@ namespace Gaia {
 		bool m_running;
 		Window* m_window;
 		Renderer* m_renderer;
+		ResourceManager* m_resources;
 
 		Editor* m_editor;
 		Scene* m_active_scene;
@@ -37,5 +39,6 @@ namespace Gaia {
 		static Engine* get();
 		static Window* get_window();
 		static Renderer* get_renderer();
+		static ResourceManager* get_resources();
 	};
 }

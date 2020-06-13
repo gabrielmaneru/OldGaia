@@ -22,6 +22,8 @@ namespace Gaia {
 
 			// Create editor
 			m_editor = new Editor();
+
+			m_resources = new ResourceManager();
 		}
 		GAIA_ELOG_TRACE("Engine Initialize Succesfully"); std::cout << std::endl;
 	}
@@ -30,6 +32,7 @@ namespace Gaia {
 
 		m_layers.clear();
 
+		delete m_resources;
 		delete m_editor;
 		delete m_renderer;
 		delete m_window;
@@ -75,6 +78,12 @@ namespace Gaia {
 	{
 		Renderer* w = get()->m_renderer;
 		GAIA_EASSERT(w, "Invalid Renderer Access");
+		return w;
+	}
+	ResourceManager * Engine::get_resources()
+	{
+		ResourceManager* w = get()->m_resources;
+		GAIA_EASSERT(w, "Invalid Resource Manager Access");
 		return w;
 	}
 }

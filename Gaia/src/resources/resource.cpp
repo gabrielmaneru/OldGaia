@@ -1,9 +1,13 @@
 #include "gaia_pch.h"
 #include "resource.h"
+#include <utils/path_utils.h>
+
 namespace Gaia {
-	Resource::Resource(const std::string & path)
+
+	Resource::Resource(const std::string & path, const e_Extension ext)
 		: m_loaded(false), m_path(path),
-		m_name(get_name_from_path(path)) {}
+		m_name(get_name_from_path(path)),
+		m_extension(ext) {}
 	void Resource::load()
 	{
 		if (m_loaded)
