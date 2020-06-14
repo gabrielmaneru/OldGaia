@@ -12,15 +12,16 @@ namespace Gaia {
 		m_uv_coord.resize(size, vec2{ 0.0f });
 		m_tangent.resize(size, vec3{ 0.0f });
 		m_bitangent.resize(size, vec3{ 0.0f });
+		m_weights.resize(size, vec4{ 0.0f });
+		m_boneid.resize(size, ivec4{ 0 });
 	}
 	void VertexBuf::create()
 	{
-		m_vbo.resize(get_vb_count(), 0u);
-		glGenBuffers(get_vb_count(), m_vbo.data());
+		glGenBuffers(m_vbo.size(), m_vbo.data());
 	}
 	void VertexBuf::destroy()
 	{
-		glDeleteBuffers(get_vb_count(), m_vbo.data());
+		glDeleteBuffers(m_vbo.size(), m_vbo.data());
 	}
 	void VertexBuf::load()
 	{
@@ -51,17 +52,6 @@ namespace Gaia {
 		glBufferData(GL_ARRAY_BUFFER, m_size * sizeof(vec3), m_bitangent.data(), GL_STATIC_DRAW);
 		glEnableVertexAttribArray(4);
 		glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
-	}
-	
-	AnimVertexBuf::AnimVertexBuf(u32 size)
-		:VertexBuf(size)
-	{
-		m_weights.resize(size, vec4{ 0.0f });
-		m_boneid.resize(size, ivec4{ 0 });
-	}
-	void AnimVertexBuf::load()
-	{
-		VertexBuf::load();
 
 		glBindBuffer(GL_ARRAY_BUFFER, m_vbo[6]);
 		glBufferData(GL_ARRAY_BUFFER, m_size * sizeof(vec4), m_weights.data(), GL_STATIC_DRAW);
@@ -75,31 +65,31 @@ namespace Gaia {
 	}
 
 	Mesh::Mesh(u32 size)
-		: m_vbo(size)
+		: m_vb(size)
 	{
 		glGenVertexArrays(1, &m_vao);
 		glBindVertexArray(m_vao);
-		m_vbo.create();
+		m_vb.create();
 		glBindVertexArray(0);
 	}
 
 	Mesh::~Mesh()
 	{
 		glBindVertexArray(m_vao);
-		m_vbo.destroy();
+		m_vb.destroy();
 		glDeleteVertexArrays(1, &m_vao);
 		glBindVertexArray(0);
 	}
 	void Mesh::load()
 	{
 		glBindVertexArray(m_vao);
-		m_vbo.load();
+		m_vb.load();
 		glBindVertexArray(0);
 	}
 	void Mesh::draw()
 	{
 		glBindVertexArray(m_vao);
-		glDrawElements(GL_TRIANGLES, (int)m_vbo.m_indices.size(), GL_UNSIGNED_INT, nullptr);
+		glDrawElements(GL_TRIANGLES, (int)m_vb.m_indices.size(), GL_UNSIGNED_INT, nullptr);
 		glBindVertexArray(0);
 	}
 }

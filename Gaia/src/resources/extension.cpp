@@ -21,11 +21,14 @@ namespace Gaia {
 					GAIA_EASSERT(false, "Incomplete Extension Name");
 				case e_Extension::begin:
 					continue;
-				case e_Extension::e_png:
+				case e_Extension::png:
 					ext_name = "png";
 					break;
-				case e_Extension::e_jpg:
+				case e_Extension::jpg:
 					ext_name = "jpg";
+					break;
+				case e_Extension::obj:
+					ext_name = "obj";
 					break;
 				}
 

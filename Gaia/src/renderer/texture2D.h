@@ -6,8 +6,9 @@ namespace Gaia {
 
 	class Texture2D : public Texture, public Resource {
 	public:
-		Texture2D(const std::string& path, const e_Extension ext);
-		Extensions(e_Extension::e_png);
+		Texture2D(const std::string& path, const e_Extension ext)
+			: Texture(), Resource(path, ext) {}
+		Extensions(e_Extension::png, e_Extension::jpg);
 
 		bool load_internal()override;
 		bool unload_internal()override;

@@ -18,10 +18,7 @@ namespace Gaia {
 		void run_command(LayerCommand cmd);
 		template<typename L>
 		void add_layer(std::shared_ptr<L>&& p) { m_layers.emplace_back(p); }
-
-		Scene* get_active_scene() { return m_active_scene; }
-		void set_active_scene(Scene* p) { m_active_scene = p; }
-
+		
 		void on_window_close(const WindowClose_Event & event);
 
 		
@@ -32,7 +29,6 @@ namespace Gaia {
 		ResourceManager* m_resources;
 
 		Editor* m_editor;
-		Scene* m_active_scene;
 		LayerList m_layers;
 
 	public:

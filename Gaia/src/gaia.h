@@ -17,14 +17,22 @@
 #include <events/event_listener.h>
 
 // Renderer
-#include <renderer/renderer.h>
-#include <renderer/texture2D.h>
 #include <renderer/framebuffer.h>
+#include <renderer/model.h>
+#include <renderer/renderer.h>
 #include <renderer/shader.h>
+#include <renderer/texture2D.h>
+
+// Resources
+#include <resources/extension.h>
+#include <resources/resource.h>
+#include <resources/resource_manager.h>
 
 // Scene
 #include <scene/scene.h>
 #include <scene/entity.h>
 
-// Component
+// Components
+#include <components/camera.h>
+#include <components/camera_controller.h>
 #include <components/mesh_renderable.h>

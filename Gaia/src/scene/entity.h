@@ -7,10 +7,21 @@ namespace Gaia {
 		Entity(const std::string& name);
 		~Entity() = default;
 
-		template<typename T> shared<T> get_component();
-		template<typename T> shared<const T> get_component()const;
-		template<typename T> shared<T> add_component();
-		void destroy();
+		void enter();
+		void update(float dt);
+		void exit();
+
+		template<typename T>
+		shared<T> get_component();
+		template<typename T>
+		shared<const T> get_component()const;
+		template<typename T>
+		shared<T> add_component();
+
+		mat4 get_world(){ return m_transform; }
+		vec3 get_front()const;
+		vec3 get_up()const;
+		vec3 get_right()const;
 
 	private:
 		bool m_alive;
@@ -47,7 +58,8 @@ namespace Gaia {
 			return cmp;
 		}
 
-		 cmp = new_shared<T>(this);
+		 cmp = new_shared<T>();
+		 cmp->m_owner = this;
 		TypeInfo type = type_of(*cmp);
 
 		cmp->initialize();

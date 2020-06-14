@@ -10,10 +10,10 @@ namespace Gaia {
 		reset_id();
 		switch (m_extension)
 		{
-		case Gaia::e_Extension::e_png:
+		case Gaia::e_Extension::png:
 			stb_data_load_png();
 			break;
-		case Gaia::e_Extension::e_jpg:
+		case Gaia::e_Extension::jpg:
 			stb_data_load_jpg();
 			break;
 		}
@@ -35,10 +35,6 @@ namespace Gaia {
 			glDeleteTextures(1, &m_id);
 			m_id = 0;
 		}
-	}
-	Texture2D::Texture2D(const std::string & path, const e_Extension ext)
-		: Texture(),Resource(path, ext)
-	{
 	}
 	bool Texture2D::load_internal()
 	{

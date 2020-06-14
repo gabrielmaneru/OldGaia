@@ -6,8 +6,9 @@ namespace Gaia {
 	enum class e_Extension {
 		none,
 		begin,
-		e_png,
-		e_jpg,
+		png,
+		jpg,
+		obj,
 		end
 	};
 	inline e_Extension operator++(e_Extension&x);

@@ -1,13 +1,13 @@
 #pragma once
 
 namespace Gaia {
-	class VertexBuf
+	struct VertexBuf
 	{
 	public:
 		VertexBuf(u32 size);
 		void create();
 		void destroy();
-		virtual void load();
+		void load();
 
 		std::vector<u32> m_indices;
 		std::vector<vec3> m_position;
@@ -15,24 +15,14 @@ namespace Gaia {
 		std::vector<vec2> m_uv_coord;
 		std::vector<vec3> m_tangent;
 		std::vector<vec3> m_bitangent;
-
-	protected:
-		virtual u32 get_vb_count()const{ return 6; }
-
-		u32 m_size;
-		std::vector<u32> m_vbo;
-	};
-	class AnimVertexBuf : public VertexBuf
-	{
-	public:
-		AnimVertexBuf(u32 size);
-		void load()override;
 		std::vector<vec4> m_weights;
 		std::vector<ivec4> m_boneid;
 
-	protected:
-		u32 get_vb_count()const override{ return 8; }
+	private:
+		u32 m_size;
+		std::array<u32,8> m_vbo;
 	};
+
 	class Mesh {
 	public:
 		Mesh(u32 size);
@@ -41,8 +31,10 @@ namespace Gaia {
 		void load();
 		void draw();
 
+		friend class Model;
+
 	private:
-		VertexBuf m_vbo;
+		VertexBuf m_vb;
 		u32 m_vao;
 	};
 }

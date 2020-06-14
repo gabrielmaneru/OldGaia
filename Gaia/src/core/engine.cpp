@@ -5,7 +5,7 @@ namespace Gaia {
 	Engine * instance = nullptr;
 
 	Engine::Engine()
-		:m_running(true), m_active_scene(nullptr) {
+		:m_running(true) {
 		// Check if application already exists
 		GAIA_EASSERT(!instance, "Engine already created!");
 		instance = this;

@@ -6,11 +6,16 @@ void SandboxLayer::begin()
 {
 	// Create Scene
 	m_scene = new Scene("Sandbox");
-	Engine::get()->set_active_scene(m_scene);
+
+	// Add Camera
+	auto pE = m_scene->create_entity("Camera");
+	pE->add_component<CameraController>();
+	pE->enter();
 
 	// Add Cube Entity
-	auto pE = m_scene->create_entity("Cube1");
+	pE = m_scene->create_entity("Cube1");
 	pE->add_component<MeshRenderable>();
+	pE->enter();
 }
 
 void SandboxLayer::update()

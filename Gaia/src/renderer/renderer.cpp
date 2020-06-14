@@ -83,8 +83,8 @@ namespace Gaia {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		m_shader_debug->bind();
-		glBindVertexArray(vao);
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		for (auto r : m_renderables)
+			r->draw();
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
@@ -109,7 +109,7 @@ namespace Gaia {
 
 	u32 Renderer::get_final_texture_id() const
 	{
-		return Engine::get_resources()->get<Texture2D>("error")->get_id();
+		//return Engine::get_resources()->get<Texture2D>("error")->get_id();
 		return m_fb->get_txt_id(0);
 	}
 }
