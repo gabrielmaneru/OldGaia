@@ -21,6 +21,6 @@ namespace Gaia {
 	}
 	mat4 Camera::get_projection(vec2 view_size) const
 	{
-		return glm::perspectiveFov(m_fov, view_size.x, view_size.y, m_clip_planes.x, m_clip_planes.y);
+		return glm::perspectiveFov(glm::radians(m_fov), view_size.x, view_size.y, m_clip_planes.x, m_clip_planes.y);
 	}
 }

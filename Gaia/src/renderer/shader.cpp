@@ -100,6 +100,52 @@ namespace Gaia {
 		if (m_id)
 			glUseProgram(m_id);
 	}
+	void Shader::set_uniform(const char * name, bool val) const
+	{
+		set_uniform(name, val ? 1 : 0);
+	}
+	void Shader::set_uniform(const char * name, int val) const
+	{
+		int loc = glGetUniformLocation(m_id, name);
+		if (loc >= 0)
+			glUniform1i(loc, val);
+	}
+	void Shader::set_uniform(const char * name, float val) const
+	{
+		int loc = glGetUniformLocation(m_id, name);
+		if (loc >= 0)
+			glUniform1f(loc, val);
+	}
+	void Shader::set_uniform(const char * name, const vec2 & v) const
+	{
+		int loc = glGetUniformLocation(m_id, name);
+		if (loc >= 0)
+			glUniform2f(loc, v.x, v.y);
+	}
+	void Shader::set_uniform(const char * name, const vec3 & v) const
+	{
+		int loc = glGetUniformLocation(m_id, name);
+		if (loc >= 0)
+			glUniform3f(loc, v.x, v.y, v.z);
+	}
+	void Shader::set_uniform(const char * name, const vec4 & v) const
+	{
+		int loc = glGetUniformLocation(m_id, name);
+		if (loc >= 0)
+			glUniform4f(loc, v.x, v.y, v.z, v.w);
+	}
+	void Shader::set_uniform(const char * name, const mat3 & m) const
+	{
+		int loc = glGetUniformLocation(m_id, name);
+		if (loc >= 0)
+			glUniformMatrix3fv(loc, 1, GL_FALSE, &m[0][0]);
+	}
+	void Shader::set_uniform(const char * name, const mat4 & m) const
+	{
+		int loc = glGetUniformLocation(m_id, name);
+		if (loc >= 0)
+			glUniformMatrix4fv(loc, 1, GL_FALSE, &m[0][0]);
+	}
 	Shader::e_Type Shader::get_type(const std::string & extension)
 	{
 		if (extension == "frag")

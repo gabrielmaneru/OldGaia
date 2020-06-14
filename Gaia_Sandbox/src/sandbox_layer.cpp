@@ -11,6 +11,7 @@ void SandboxLayer::begin()
 	auto pE = m_scene->create_entity("Camera");
 	pE->add_component<CameraController>();
 	pE->enter();
+	pE->get_position() = vec3(-2.0f, 2.0f, -10.0f);
 
 	// Add Cube Entity
 	pE = m_scene->create_entity("Cube1");

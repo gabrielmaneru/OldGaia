@@ -1,8 +1,9 @@
 #pragma once
 #include <components/component.h>
+#include <utils/transform3D.h>
 
 namespace Gaia {
-	class Entity {
+	class Entity : public Transform3D {
 	public:
 		Entity(const std::string& name);
 		~Entity() = default;
@@ -18,15 +19,9 @@ namespace Gaia {
 		template<typename T>
 		shared<T> add_component();
 
-		mat4 get_world(){ return m_transform; }
-		vec3 get_front()const;
-		vec3 get_up()const;
-		vec3 get_right()const;
-
 	private:
 		bool m_alive;
 		std::string m_name;
-		mat4 m_transform;
 		std::map<TypeInfo, shared<Component>> m_components;
 	};
 

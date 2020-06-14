@@ -32,6 +32,10 @@ namespace Gaia {
 		glEnable(GL_DEBUG_OUTPUT);
 		glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
 
+		glEnable(GL_DEPTH_TEST);
+		glEnable(GL_CULL_FACE);
+		glCullFace(GL_BACK);
+
 		GAIA_ELOG_INFO("Vendor: {0}", (const char*)glGetString(GL_VENDOR));
 		GAIA_ELOG_INFO("Renderer: {0}", (const char*)glGetString(GL_RENDERER));
 		GAIA_ELOG_INFO("Version: {0}", (const char*)glGetString(GL_VERSION));
@@ -82,10 +86,18 @@ namespace Gaia {
 		glClearColor(1.f, 0.f, 0.f, 0.f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		m_shader_debug->bind();
-		for (auto r : m_renderables)
-			r->draw();
-
+		if (auto scn = Scene::s_active_scene)
+		{
+			m_shader_debug->bind();
+			auto cam = scn->get_cam();
+			mat4 p = cam->get_projection(vec2(canvas.x, canvas.y));
+			m_shader_debug->set_uniform("P", p);
+			mat4 v = glm::inverse(cam->get_owner()->get_matrix());
+			m_shader_debug->set_uniform("V", v);
+			m_shader_debug->set_uniform("M", mat4(1.0f));
+			for (auto r : m_renderables)
+				r->draw();
+		}
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
 

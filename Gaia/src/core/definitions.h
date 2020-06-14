@@ -67,6 +67,7 @@ namespace Gaia {
 	using ivec4 = glm::ivec4;
 	using mat3 = glm::mat3;
 	using mat4 = glm::mat4;
+	using quat = glm::quat;
 }
 
 // Asserts

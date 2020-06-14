@@ -7,10 +7,14 @@ layout (location = 4) in vec3 attr_bit;
 layout (location = 5) in vec4 attr_wbones;
 layout (location = 6) in ivec4 attr_bones;
 
+uniform mat4 M;
+uniform mat4 V;
+uniform mat4 P;
+
 out vec4 v_color;
 
 void main()
 {
-	v_color = vec4(attr_bit, 1.0);
-	gl_Position = vec4(a_position, 1.0);
+	v_color = vec4(a_position, 1.0);
+	gl_Position = P*V*M*vec4(a_position, 1.0);
 }
