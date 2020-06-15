@@ -16,6 +16,11 @@ namespace Gaia {
 		if (s_active_scene == this)
 			s_active_scene = nullptr;
 	}
+	void Scene::update(float dt)
+	{
+		for (auto pE : m_entities)
+			pE->update(dt);
+	}
 	Entity * Scene::create_entity(const std::string & name)	{
 		m_entities.push_back(new Entity(name));
 		return m_entities.back();

@@ -1,6 +1,8 @@
 #include "gaia_pch.h"
 #include "engine.h"
 
+#include <GLFW/glfw3.h>
+
 namespace Gaia {
 	Engine * instance = nullptr;
 
@@ -45,10 +47,15 @@ namespace Gaia {
 			if (!m_window->get_minimized())
 			{
 				run_command(&Layer::update);
+				if(Scene::s_active_scene)
+					Scene::s_active_scene->update(m_timestep);
 				m_renderer->render();
 				m_editor->render();
 			}
 			m_window->update();
+			float time = (float)glfwGetTime();
+			m_timestep = time - m_last_frametime;
+			m_last_frametime = time;
 		}
 
 		run_command(&Layer::end);

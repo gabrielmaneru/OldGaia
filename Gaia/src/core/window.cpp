@@ -26,6 +26,7 @@ namespace Gaia{
 		glfwMakeContextCurrent(m_native);
 		GAIA_EASSERT(gladLoadGLLoader((GLADloadproc)glfwGetProcAddress), "Glad failed to initialize");
 
+		glfwSetWindowUserPointer(m_native, this);
 		// Register Window Resize Event
 		register_event(*this, &Window::on_window_resize);
 		// Set Window Resize Callback
@@ -41,15 +42,16 @@ namespace Gaia{
 		});
 
 		// Set Key Callback
-		glfwSetKeyCallback(m_native, [](GLFWwindow*, int key, int, int action, int)->void {
+		glfwSetKeyCallback(m_native, [](GLFWwindow*n, int key, int, int action, int)->void {
+			Window* w = static_cast<Window*>(glfwGetWindowUserPointer(n));
 			switch (action)
 			{
 				case GLFW_PRESS:
 				{
 					KeyPressed_Event event;
 					event.m_key = key;
-					event.m_repeat = 0;
 					EventDispatcher::trigger_event(event);
+					w->m_keyboard.insert(key);
 					break;
 				}
 				case GLFW_RELEASE:
@@ -57,14 +59,7 @@ namespace Gaia{
 					KeyReleased_Event event;
 					event.m_key = key;
 					EventDispatcher::trigger_event(event);
-					break;
-				}
-				case GLFW_REPEAT:
-				{
-					KeyPressed_Event event;
-					event.m_key = key;
-					event.m_repeat = 1;
-					EventDispatcher::trigger_event(event);
+					w->m_keyboard.erase(key);
 					break;
 				}
 			}
@@ -76,14 +71,16 @@ namespace Gaia{
 			EventDispatcher::trigger_event(event);
 		});
 		// Set Mouse Button Callback
-		glfwSetMouseButtonCallback(m_native, [](GLFWwindow* window, int button, int action, int) {
-			switch (button)
+		glfwSetMouseButtonCallback(m_native, [](GLFWwindow* n, int button, int action, int) {
+			Window* w = static_cast<Window*>(glfwGetWindowUserPointer(n));
+			switch (action)
 			{
 				case GLFW_PRESS:
 				{
 					MousePressed_Event event;
 					event.m_button = button;
 					EventDispatcher::trigger_event(event);
+					w->m_mousebut.insert(button);
 					break;
 				}
 				case GLFW_RELEASE:
@@ -91,6 +88,7 @@ namespace Gaia{
 					MouseReleased_Event event;
 					event.m_button = button;
 					EventDispatcher::trigger_event(event);
+					w->m_mousebut.erase(button);
 					break;
 				}
 			}
@@ -104,10 +102,20 @@ namespace Gaia{
 		});
 		// Set Cursor Pos Callback
 		glfwSetCursorPosCallback(m_native, [](GLFWwindow* window, double x, double y) {
+			static bool first = true;
+			static double prevx, prevy;
+			if (first)
+				prevx=x,prevy=y,
+				first = false;
+
 			MouseMoved_Event event;
 			event.m_x = x;
 			event.m_y = y;
+			event.m_xOff = x - prevx;
+			event.m_yOff = prevy - y;
 			EventDispatcher::trigger_event(event);
+
+			prevx = x, prevy = y;
 		});
 
 		// Create ImGui cursors
@@ -135,8 +143,21 @@ namespace Gaia{
 			glfwTerminate();
 	}
 	void Window::update() {
-		glfwPollEvents();
 		glfwSwapBuffers(m_native);
+		glfwPollEvents();
+
+		KeyDown_Event e1;
+		for (auto k : m_keyboard)
+		{
+			e1.m_key = k;
+			EventDispatcher::trigger_event(e1);
+		}
+		MouseDown_Event e2;
+		for (auto k : m_mousebut)
+		{
+			e2.m_button = k;
+			EventDispatcher::trigger_event(e2);
+		}
 	}
 	void Window::set_vsync(bool enable) {
 		if (enable)

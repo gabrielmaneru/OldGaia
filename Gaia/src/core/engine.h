@@ -21,7 +21,9 @@ namespace Gaia {
 		
 		void on_window_close(const WindowClose_Event & event);
 
-		
+		float m_timestep;
+		float m_last_frametime{0.0f};
+
 	private:
 		bool m_running;
 		Window* m_window;

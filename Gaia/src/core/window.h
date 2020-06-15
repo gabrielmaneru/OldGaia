@@ -7,13 +7,15 @@ struct GLFWcursor;
 namespace Gaia {
 	struct WindowResize_Event : public iEvent { urect m_canvas; };
 	struct WindowClose_Event : public iEvent {};
-	struct KeyPressed_Event     : public iEvent { int m_key, m_repeat; };
-	struct KeyReleased_Event    : public iEvent { int m_key; };
-	struct KeyTyped_Event       : public iEvent { int m_key; };
-	struct MousePressed_Event   : public iEvent { int m_button; };
+	struct KeyPressed_Event : public iEvent { int m_key; };
+	struct KeyDown_Event : public iEvent { int m_key; };
+	struct KeyReleased_Event : public iEvent { int m_key; };
+	struct KeyTyped_Event : public iEvent { int m_key; };
+	struct MousePressed_Event : public iEvent { int m_button; };
+	struct MouseDown_Event : public iEvent { int m_button; };
 	struct MouseReleased_Event : public iEvent { int m_button; };
-	struct MouseScrolled_Event : public iEvent { double m_xOff, m_yOff; };
-	struct MouseMoved_Event  : public iEvent { double m_x, m_y; };
+	struct MouseScrolled_Event : public iEvent { float m_xOff, m_yOff; };
+	struct MouseMoved_Event : public iEvent { float m_x, m_y, m_xOff, m_yOff; };
 
 	class Window : public EventListener {
 	public:
@@ -29,6 +31,9 @@ namespace Gaia {
 		void set_vsync(bool);
 
 		void on_window_resize(const WindowResize_Event& event);
+
+		std::set<int> m_keyboard;
+		std::set<int> m_mousebut;
 
 	private:
 		std::string m_title;
