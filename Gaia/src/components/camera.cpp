@@ -19,8 +19,8 @@ namespace Gaia {
 	{
 		Scene::s_active_scene->rem_camera(m_owner->get_component<Camera>());
 	}
-	mat4 Camera::get_projection(vec2 view_size) const
+	mat4 Camera::get_projection(urect view_size) const
 	{
-		return glm::perspectiveFov(glm::radians(m_fov), view_size.x, view_size.y, m_clip_planes.x, m_clip_planes.y);
+		return glm::perspectiveFov(glm::radians(m_fov), (float)view_size.x, (float)view_size.y, m_clip_planes.x, m_clip_planes.y);
 	}
 }

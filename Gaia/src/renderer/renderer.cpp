@@ -75,11 +75,11 @@ namespace Gaia {
 	void Renderer::render()
 	{
 		// Clear Full Window
-		urect canvas = Engine::get_window()->get_canvas();
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		glViewport(0, 0, canvas.x, canvas.y);
-		glClearColor(1.f, 0.f, 0.f, 0.f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		//urect canvas = Engine::get_window()->get_canvas();
+		//glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		//glViewport(0, 0, canvas.x, canvas.y);
+		//glClearColor(1.f, 0.f, 0.f, 0.f);
+		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		// Render To FB
 		m_fb->bind();
@@ -90,7 +90,7 @@ namespace Gaia {
 		{
 			m_shader_debug->bind();
 			auto cam = scn->get_cam();
-			mat4 p = cam->get_projection(vec2(canvas.x, canvas.y));
+			mat4 p = cam->get_projection(m_viewport_size);
 			m_shader_debug->set_uniform("P", p);
 			mat4 v = glm::inverse(cam->get_owner()->get_matrix());
 			m_shader_debug->set_uniform("V", v);
@@ -119,9 +119,14 @@ namespace Gaia {
 			GAIA_ELOG_WARN("Invalid Renderable Unregister");
 	}
 
+	void Renderer::set_viewport(urect size)
+	{
+		m_viewport_size = size;
+		m_fb->resize(size);
+	}
+
 	u32 Renderer::get_final_texture_id() const
 	{
-		//return Engine::get_resources()->get<Texture2D>("error")->get_id();
 		return m_fb->get_txt_id(0);
 	}
 }

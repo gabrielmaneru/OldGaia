@@ -12,9 +12,11 @@ namespace Gaia {
 		void register_renderable(Renderable*);
 		void unregister_renderable(Renderable*);
 
+		void set_viewport(urect size);
 		u32 get_final_texture_id()const;
 		
 	private:
+		urect m_viewport_size;
 		std::set<Renderable*> m_renderables;
 		Shader* m_shader_debug;
 		Framebuffer* m_fb;

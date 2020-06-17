@@ -76,7 +76,7 @@ namespace Gaia {
 		//	window_flags |= ImGuiWindowFlags_NoBackground;
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-		ImGui::Begin("DockSpace Demo", &p_open, window_flags);
+		ImGui::Begin("DockSpace GUI", &p_open, window_flags);
 		ImGui::PopStyleVar();
 
 		if (opt_fullscreen)
@@ -304,10 +304,7 @@ namespace Gaia {
 
 		auto viewportOffset = ImGui::GetCursorPos(); // includes tab bar
 		auto viewportSize = ImGui::GetContentRegionAvail();
-		//SceneRenderer::SetViewportSize((uint32_t)viewportSize.x, (uint32_t)viewportSize.y);
-		//m_ActiveScene->GetCamera().SetProjectionMatrix(glm::perspectiveFov(glm::radians(45.0f), viewportSize.x, viewportSize.y, 0.1f, 10000.0f));
-		//m_ActiveScene->GetCamera().SetViewportSize((uint32_t)viewportSize.x, (uint32_t)viewportSize.y);
-		
+		Engine::get_renderer()->set_viewport(urect{ (u32)viewportSize.x, (u32)viewportSize.y });
 		ImGui::Image((ImTextureID)Engine::get_renderer()->get_final_texture_id(), viewportSize, { 0, 1 }, { 1, 0 });
 		/*
 		static int counter = 0;

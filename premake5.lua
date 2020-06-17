@@ -1,3 +1,20 @@
+if os.istarget "Windows" then
+	require "vstudio"
+	local p = premake;
+	local vc = p.vstudio.vc2010;
+	
+	function disableFastUpToDateCheck(prj, cfg)
+		vc.element("DisableFastUpToDateCheck", nil, "true")
+	end
+	
+	p.override(vc.elements, "globalsCondition",
+			function(oldfn, prj, cfg)
+				local elements = oldfn(prj, cfg)
+				elements = table.join(elements, {disableFastUpToDateCheck})
+				return elements
+			end)
+end
+
 workspace "Gaia"
 	architecture "x64"
 	targetdir "build"

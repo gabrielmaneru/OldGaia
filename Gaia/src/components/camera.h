@@ -8,7 +8,7 @@ namespace Gaia {
 		void enter()override;
 		void exit()override;
 
-		mat4 get_projection(vec2 view_size)const;
+		mat4 get_projection(urect view_size)const;
 
 	private:
 		enum class e_Projection {
