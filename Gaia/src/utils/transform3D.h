@@ -8,19 +8,26 @@ namespace Gaia {
 		vec3& get_position();
 		quat& get_rotation();
 		vec3& get_scale();
-		vec3 get_front();
-		vec3 get_right();
-		vec3 get_up();
+		const mat4& get_matrix()const;
+		const vec3& get_position()const;
+		const quat& get_rotation()const;
+		const vec3& get_scale()const;
+
+		vec3 get_front()const;
+		vec3 get_right()const;
+		vec3 get_up()const;
 
 	private:
-		void compose();
-		void decompose();
+		enum class e_Mode { Vector, Matrix };
+		void check_is(e_Mode m)const;
+		void compose()const;
+		void decompose()const;
 		vec3 rotate_unit_vec(const vec3& v)const;
 
-		bool m_is_composed{true};
-		mat4 m_matrix{ 1.0f };
-		vec3 m_position;
-		quat m_rotation;
-		vec3 m_scale;
+		mutable e_Mode m_mode{e_Mode::Matrix};
+		mutable mat4 m_matrix{ 1.0f };
+		mutable vec3 m_position;
+		mutable quat m_rotation;
+		mutable vec3 m_scale;
 	};
 }

@@ -4,12 +4,11 @@
 #include <renderer/renderer.h>
 
 namespace Gaia {
-	Renderable::Renderable()
+	void Renderable::register_renderable()
 	{
 		Engine::get_renderer()->register_renderable(this);
 	}
-
-	Renderable::~Renderable()
+	void Renderable::unregister_renderable()
 	{
 		Engine::get_renderer()->unregister_renderable(this);
 	}

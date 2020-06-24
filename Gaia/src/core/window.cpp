@@ -96,8 +96,8 @@ namespace Gaia{
 		// Set Scroll Callback
 		glfwSetScrollCallback(m_native, [](GLFWwindow* window, double xOff, double yOff) {
 			MouseScrolled_Event event;
-			event.m_xOff = xOff;
-			event.m_yOff = yOff;
+			event.m_xOff = (float)xOff;
+			event.m_yOff = (float)yOff;
 			EventDispatcher::trigger_event(event);
 		});
 		// Set Cursor Pos Callback
@@ -109,10 +109,10 @@ namespace Gaia{
 				first = false;
 
 			MouseMoved_Event event;
-			event.m_x = x;
-			event.m_y = y;
-			event.m_xOff = x - prevx;
-			event.m_yOff = prevy - y;
+			event.m_x = (float)x;
+			event.m_y = (float)y;
+			event.m_xOff = (float)(x - prevx);
+			event.m_yOff = (float)(prevy - y);
 			EventDispatcher::trigger_event(event);
 
 			prevx = x, prevy = y;

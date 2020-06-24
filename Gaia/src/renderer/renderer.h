@@ -16,7 +16,7 @@ namespace Gaia {
 		u32 get_final_texture_id()const;
 		
 	private:
-		urect m_viewport_size;
+		urect m_viewport_size{1920, 1080};
 		std::set<Renderable*> m_renderables;
 		Shader* m_shader_debug;
 		Framebuffer* m_fb;

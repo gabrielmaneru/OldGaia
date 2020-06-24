@@ -1,4 +1,6 @@
 #pragma once
+#include <gaia_pch.h>
+
 // Core
 #include <core/definitions.h>
 #include <core/engine.h>

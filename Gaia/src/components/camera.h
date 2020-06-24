@@ -3,10 +3,14 @@
 
 namespace Gaia {
 	class Camera : public Component {
+		DECL_COMP(Camera)
 	public:
 		void initialize()override;
 		void enter()override;
 		void exit()override;
+		void serialize(Json::Value& json)const override;
+		void deserialize(const Json::Value& json)override;
+		std::string get_type_name()const override { return "Camera"; }
 
 		mat4 get_projection(urect view_size)const;
 
@@ -17,7 +21,7 @@ namespace Gaia {
 		enum class e_FOV_Axis {
 			Vertical, Horizontal
 		} m_fov_axis;
-		float m_fov;
+		float m_fov_angle;
 		vec2 m_clip_planes;
 		vec4 m_viewport;
 	};

@@ -17,11 +17,11 @@ namespace Gaia {
 	}
 	void VertexBuf::create()
 	{
-		glGenBuffers(m_vbo.size(), m_vbo.data());
+		glGenBuffers((int)m_vbo.size(), m_vbo.data());
 	}
 	void VertexBuf::destroy()
 	{
-		glDeleteBuffers(m_vbo.size(), m_vbo.data());
+		glDeleteBuffers((int)m_vbo.size(), m_vbo.data());
 	}
 	void VertexBuf::load()
 	{

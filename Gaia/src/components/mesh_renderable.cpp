@@ -7,6 +7,7 @@ namespace Gaia {
 	}
 	void MeshRenderable::enter()
 	{
+		register_renderable();
 		m_model = new Model("assets/meshes/cube.obj", e_Extension::obj);
 		m_model->load_internal();
 	}
@@ -20,5 +21,14 @@ namespace Gaia {
 	void MeshRenderable::exit()
 	{
 		delete m_model;
+		unregister_renderable();
+	}
+	void MeshRenderable::serialize(Json::Value & json) const
+	{
+		save(m_visible, json["Visible"]);
+	}
+	void MeshRenderable::deserialize(const Json::Value & json)
+	{
+		load(m_visible, json["Visible"]);
 	}
 }

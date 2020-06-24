@@ -16,10 +16,20 @@ namespace Gaia {
 		if (s_active_scene == this)
 			s_active_scene = nullptr;
 	}
+	void Scene::enter()
+	{
+		for (auto pE : m_entities)
+			pE->enter();
+	}
 	void Scene::update(float dt)
 	{
 		for (auto pE : m_entities)
 			pE->update(dt);
+	}
+	void Scene::exit()
+	{
+		for (auto pE : m_entities)
+			pE->exit();
 	}
 	Entity * Scene::create_entity(const std::string & name)	{
 		m_entities.push_back(new Entity(name));
@@ -34,5 +44,15 @@ namespace Gaia {
 		auto it = std::find(m_cameras.begin(), m_cameras.end(), cam);
 		if (it != m_cameras.end())
 			m_cameras.erase(it);
+	}
+	void Scene::serialize(Json::Value & json) const
+	{
+		save(m_name, json["Name"]);
+		save(m_entities, json["Entities"]);
+	}
+	void Scene::deserialize(const Json::Value & json)
+	{
+		load(m_name, json["Name"]);
+		load(m_entities, json["Entities"]);
 	}
 }

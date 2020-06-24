@@ -3,7 +3,7 @@
 #include <utils/transform3D.h>
 
 namespace Gaia {
-	class Entity : public Transform3D {
+	class Entity : public Transform3D, public Serializable {
 	public:
 		Entity(const std::string& name);
 		~Entity() = default;
@@ -11,6 +11,9 @@ namespace Gaia {
 		void enter();
 		void update(float dt);
 		void exit();
+		void serialize(Json::Value& json)const override;
+		void deserialize(const Json::Value& json)override;
+		std::string get_type_name()const override { return "Entity"; }
 
 		template<typename T>
 		shared<T> get_component();
@@ -20,6 +23,9 @@ namespace Gaia {
 		shared<T> add_component();
 
 	private:
+		template<typename T, typename>
+		friend struct Load;
+		Entity() = default;
 		bool m_alive;
 		std::string m_name;
 		std::map<TypeInfo, shared<Component>> m_components;
