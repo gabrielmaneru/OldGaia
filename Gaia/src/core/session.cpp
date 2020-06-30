@@ -115,6 +115,13 @@ namespace Gaia {
 		m_scenes.emplace(m_current_level, m_current_scene);
 	}
 
+	shared<Camera> Session::get_active_camera()
+	{
+		if (m_editor)
+			return m_current_scene->m_editor_camera;
+		return m_current_scene->m_game_camera;
+	}
+
 	void Session::load()
 	{
 		// Check invalid next level

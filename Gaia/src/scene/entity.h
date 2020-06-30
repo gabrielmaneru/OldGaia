@@ -62,9 +62,9 @@ namespace Gaia {
 		 cmp = new_shared<T>();
 		 cmp->m_owner = this;
 		TypeInfo type = type_of(*cmp);
+		m_components[type] = cmp;
 
 		cmp->initialize();
-		m_components[type] = cmp;
 		return cmp;
 	}
 }

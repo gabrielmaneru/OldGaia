@@ -16,18 +16,16 @@ namespace Gaia {
 		void clear();
 
 		Entity * create_entity(const std::string& name);
-		void add_camera(const shared<Camera>& cam);
-		void rem_camera(const shared<Camera>& cam);
 		void serialize(Json::Value& json)const override;
 		void deserialize(const Json::Value& json)override;
 		std::string get_type_name()const override { return "Scene"; }
 
-		const shared<Camera>& get_cam() { return m_cameras[0]; }
+		shared<Camera> m_editor_camera;
+		shared<Camera> m_game_camera;
 		
 	private:
 		shared<Level> m_level;
 		std::string m_name;
 		std::vector<Entity*> m_entities;
-		std::vector<shared<Camera>> m_cameras;
 	};
 }

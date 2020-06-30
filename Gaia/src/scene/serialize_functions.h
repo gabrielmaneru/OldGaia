@@ -42,7 +42,7 @@ namespace Gaia {
 	#define LOAD_IMPL(Func)																	\
 	template<>																				\
 	struct Load<ReturnType<decltype(&##Func)>::type>{										\
-		static void fn(ReturnType<decltype(&##Func)>::type& val, const Json::Value& json) {	\
+		static void fn(std::remove_const<ReturnType<decltype(&##Func)>::type>::type& val, const Json::Value& json) {	\
 			if(!json.isNull() && !json.isObject() && !json.isArray())						\
 				val = json.Func();															\
 		}																					\

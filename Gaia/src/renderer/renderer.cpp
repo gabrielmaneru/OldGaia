@@ -86,10 +86,10 @@ namespace Gaia {
 		glClearColor(1.f, 0.f, 0.f, 0.f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		if (auto scn = s_session->get_current_scene())
+		if (s_session->get_current_scene())
 		{
 			m_shader_debug->bind();
-			auto cam = scn->get_cam();
+			auto cam = s_session->get_active_camera();
 			mat4 p = cam->get_projection(m_viewport_size);
 			m_shader_debug->set_uniform("P", p);
 			mat4 v = glm::inverse(cam->get_owner()->get_matrix());

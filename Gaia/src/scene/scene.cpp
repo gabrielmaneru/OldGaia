@@ -39,21 +39,10 @@ namespace Gaia {
 		for (auto pE : m_entities)
 			delete pE;
 		m_entities.clear();
-		m_cameras.clear();
 	}
 	Entity * Scene::create_entity(const std::string & name)	{
 		m_entities.push_back(new Entity(name));
 		return m_entities.back();
-	}
-	void Scene::add_camera(const shared<Camera>& cam)
-	{
-		m_cameras.push_back(cam);
-	}
-	void Scene::rem_camera(const shared<Camera>& cam)
-	{
-		auto it = std::find(m_cameras.begin(), m_cameras.end(), cam);
-		if (it != m_cameras.end())
-			m_cameras.erase(it);
 	}
 	void Scene::serialize(Json::Value & json) const
 	{

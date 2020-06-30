@@ -24,5 +24,7 @@ namespace Gaia {
 		float m_fov_angle;
 		vec2 m_clip_planes;
 		vec4 m_viewport;
+		bool m_is_editor_cam{ false };
+		bool m_is_game_cam{ false };
 	};
 }

@@ -18,6 +18,7 @@ namespace Gaia {
 		void load_level(shared<Level> lvl);
 		void remove_level(shared<Level> lvl);
 		void save_level(shared<Level> lvl);
+		shared<Camera> get_active_camera();
 
 	private:
 		enum class e_State { load, reload, update };
@@ -26,6 +27,7 @@ namespace Gaia {
 		shared<Level> m_current_level;
 		shared<Level> m_next_level;
 		std::map<shared<Level>, Scene*> m_scenes;
+		bool m_editor{ true };
 
 		void reload();
 		void load();
