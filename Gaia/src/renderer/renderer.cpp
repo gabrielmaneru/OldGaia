@@ -46,7 +46,7 @@ namespace Gaia {
 				"assets/shaders/debug.vert",
 				"assets/shaders/debug.frag"
 		});
-		m_fb = new Framebuffer(Engine::get_window()->get_canvas(),
+		m_fb = new Framebuffer(s_window->get_canvas(),
 			FramebufferProperties{
 				Texture::default_color_rgba,
 				Texture::default_depth
@@ -86,7 +86,7 @@ namespace Gaia {
 		glClearColor(1.f, 0.f, 0.f, 0.f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		if (auto scn = Scene::s_active_scene)
+		if (auto scn = s_session->get_current_scene())
 		{
 			m_shader_debug->bind();
 			auto cam = scn->get_cam();

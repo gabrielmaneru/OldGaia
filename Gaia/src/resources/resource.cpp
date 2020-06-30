@@ -3,9 +3,8 @@
 #include <utils/path_utils.h>
 
 namespace Gaia {
-
-	Resource::Resource(const std::string & path, const e_Extension ext)
-		: m_loaded(false), m_path(path),
+	Resource::Resource(const std::string & path, e_Extension ext, bool loaded)
+		: m_loaded(loaded), m_path(path),
 		m_name(get_name_from_path(path)),
 		m_extension(ext) {}
 	void Resource::load()

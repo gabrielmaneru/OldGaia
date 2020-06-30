@@ -4,7 +4,6 @@
 // Core
 #include <core/definitions.h>
 #include <core/engine.h>
-#include <core/layer.h>
 #include <core/window.h>
 
 // Debug
@@ -31,6 +30,7 @@
 #include <resources/resource_manager.h>
 
 // Scene
+#include <scene/level.h>
 #include <scene/scene.h>
 #include <scene/entity.h>
 

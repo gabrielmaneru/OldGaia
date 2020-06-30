@@ -1,6 +1,7 @@
 #include "gaia_pch.h"
 #include "camera.h"
 #include <scene/scene.h>
+#include <core/session.h>
 
 namespace Gaia {
 	void Camera::initialize()
@@ -13,11 +14,11 @@ namespace Gaia {
 	}
 	void Camera::enter()
 	{
-		Scene::s_active_scene->add_camera(m_owner->get_component<Camera>());
+		s_session->get_current_scene()->add_camera(m_owner->get_component<Camera>());
 	}
 	void Camera::exit()
 	{
-		Scene::s_active_scene->rem_camera(m_owner->get_component<Camera>());
+		s_session->get_current_scene()->rem_camera(m_owner->get_component<Camera>());
 	}
 	void Camera::serialize(Json::Value & json) const
 	{

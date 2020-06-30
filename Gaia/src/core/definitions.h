@@ -40,31 +40,37 @@ namespace Gaia {
 	using shared = std::shared_ptr<T>;
 	template<typename T, typename ... Args>
 	constexpr unique<T> new_unique(Args&&... args)
-	{return std::make_unique<T>(std::forward<Args>(args)...);}
+	{
+		return std::make_unique<T>(std::forward<Args>(args)...);
+	}
 	template<typename T, typename ... Args>
 	constexpr shared<T> new_shared(Args&&... args)
-	{return std::make_shared<T>(std::forward<Args>(args)...);}
+	{
+		return std::make_shared<T>(std::forward<Args>(args)...);
+	}
 
 
 	// Type definitions
 	using u8 = unsigned char;
 	using u32 = unsigned int;
-	struct urect{
+	struct urect {
 		u32 x, y;
 		bool operator==(const urect& r)const {
 			return x == r.x&&y == r.y;
 		}
 	};
-	using vec2 = glm::vec2;
-	using vec3 = glm::vec3;
-	using vec4 = glm::vec4;
-	using ivec2 = glm::ivec2;
-	using ivec3 = glm::ivec3;
-	using ivec4 = glm::ivec4;
-	using mat3 = glm::mat3;
-	using mat4 = glm::mat4;
-	using quat = glm::quat;
 }
+
+// Shorter GLM
+using vec2 = glm::vec2;
+using vec3 = glm::vec3;
+using vec4 = glm::vec4;
+using ivec2 = glm::ivec2;
+using ivec3 = glm::ivec3;
+using ivec4 = glm::ivec4;
+using mat3 = glm::mat3;
+using mat4 = glm::mat4;
+using quat = glm::quat;
 
 // Asserts
 #define GAIA_ASSERT(x, ...){ if(!(x)){\

@@ -30,6 +30,9 @@ namespace Gaia {
 				case e_Extension::obj:
 					ext_name = "obj";
 					break;
+				case e_Extension::level:
+					ext_name = "level";
+					break;
 				}
 
 				if (cur_ext == ext_name)

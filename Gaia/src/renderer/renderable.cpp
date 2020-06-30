@@ -6,10 +6,10 @@
 namespace Gaia {
 	void Renderable::register_renderable()
 	{
-		Engine::get_renderer()->register_renderable(this);
+		s_renderer->register_renderable(this);
 	}
 	void Renderable::unregister_renderable()
 	{
-		Engine::get_renderer()->unregister_renderable(this);
+		s_renderer->unregister_renderable(this);
 	}
 }

@@ -5,9 +5,9 @@ namespace Gaia {
 
 	class Resource
 	{
-	public:
 		Resource(const Resource&) = delete;
-		Resource(const std::string& path, const e_Extension);
+	public:
+		Resource(const std::string& path, e_Extension ext, bool loaded = false);
 
 		void load();
 		void unload();
@@ -16,6 +16,7 @@ namespace Gaia {
 		const std::string& get_name()const { return m_name; }
 		const std::string& get_path()const { return m_path; }
 
+		friend class ResourceManager;
 	protected:
 
 		virtual bool load_internal() { return true; }

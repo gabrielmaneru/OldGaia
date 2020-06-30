@@ -10,6 +10,6 @@ namespace Gaia {
 		void render();
 
 	private:
-		std::weak_ptr<ImGuiLayer> m_layer; // Borrowed ownership
+		void render_docking();
 	};
 }

@@ -2,19 +2,22 @@
 #include "scene.h"
 
 namespace Gaia {
-	Scene* Scene::s_active_scene = nullptr;
-
-	Scene::Scene(const std::string & name)
-		: m_name(name) {
-
-		if (!s_active_scene)
-			s_active_scene = this;
-	}
 	Scene::~Scene()	{
-		for (auto pE : m_entities)
-			delete pE;
-		if (s_active_scene == this)
-			s_active_scene = nullptr;
+		clear();
+	}
+	void Scene::load_level(shared<Level> lvl)
+	{
+		if (!lvl)
+			GAIA_ELOG_ERROR("Loading null level");
+		m_level = lvl;
+		lvl->load_level(this);
+	}
+	void Scene::save_level(shared<Level> lvl)
+	{
+		if (!lvl)
+			GAIA_ELOG_ERROR("Saving null level");
+		m_level = lvl;
+		lvl->save_level(this);
 	}
 	void Scene::enter()
 	{
@@ -30,6 +33,13 @@ namespace Gaia {
 	{
 		for (auto pE : m_entities)
 			pE->exit();
+	}
+	void Scene::clear()
+	{
+		for (auto pE : m_entities)
+			delete pE;
+		m_entities.clear();
+		m_cameras.clear();
 	}
 	Entity * Scene::create_entity(const std::string & name)	{
 		m_entities.push_back(new Entity(name));
@@ -47,12 +57,10 @@ namespace Gaia {
 	}
 	void Scene::serialize(Json::Value & json) const
 	{
-		save(m_name, json["Name"]);
-		save(m_entities, json["Entities"]);
+		save(m_entities, json);
 	}
 	void Scene::deserialize(const Json::Value & json)
 	{
-		load(m_name, json["Name"]);
-		load(m_entities, json["Entities"]);
+		load(m_entities, json);
 	}
 }

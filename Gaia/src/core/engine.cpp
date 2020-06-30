@@ -4,93 +4,56 @@
 #include <GLFW/glfw3.h>
 
 namespace Gaia {
-	Engine * instance = nullptr;
+
+	Engine* s_engine = nullptr;
+	Window* s_window = nullptr;
+	Renderer* s_renderer = nullptr;
 
 	Engine::Engine()
 		:m_running(true) {
 		// Check if application already exists
-		GAIA_EASSERT(!instance, "Engine already created!");
-		instance = this;
+		GAIA_EASSERT(!s_engine, "Engine already created!");
+		s_engine = this;
 
-		GAIA_ELOG_TRACE("Engine Initializing");
-		{
+		GAIA_ELOG_TRACE("Engine Initializing");{
 			// Create window
-			m_window = new Window{ "Gaia Engine", {1280, 720} };
+			s_window = new Window{ "Gaia Engine", {1280, 720} };
 			register_event(*this, &Engine::on_window_close);
-			m_window->set_vsync(true);
-
+			s_window->set_vsync(true);
 			// Create renderer
-			m_renderer = new Renderer();
+			s_renderer = new Renderer();
 
-			// Create editor
-			m_editor = new Editor();
-
-			m_resources = new ResourceManager();
+			// Create session
+			m_session = new Session();
 		}
-		GAIA_ELOG_TRACE("Engine Initialize Succesfully"); std::cout << std::endl;
+		GAIA_ELOG_TRACE("Engine Initialized Succesfully"); std::cout << std::endl;
 	}
 
 	Engine::~Engine(){
+		delete m_session;
 
-		m_layers.clear();
-
-		delete m_resources;
-		delete m_editor;
-		delete m_renderer;
-		delete m_window;
+		delete s_renderer;
+		delete s_window;
 	}
 
 	void Engine::run(){
-		run_command(&Layer::begin);
-
+		m_session->begin();
 		while (m_running){
-			if (!m_window->get_minimized())
+			if (!s_window->get_minimized())
 			{
-				run_command(&Layer::update);
-				if(Scene::s_active_scene)
-					Scene::s_active_scene->update(m_timestep);
-				m_renderer->render();
-				m_editor->render();
+				m_session->update(m_timestep);
+				s_renderer->render();
+				m_session->render_editor();
 			}
-			m_window->update();
+			s_window->update();
 			float time = (float)glfwGetTime();
 			m_timestep = time - m_last_frametime;
 			m_last_frametime = time;
 		}
-
-		run_command(&Layer::end);
-	}
-
-	void Engine::run_command(LayerCommand cmd)
-	{
-		for (auto l : m_layers)
-			((*l).*cmd)();
+		m_session->end();
 	}
 
 	void Engine::on_window_close(const WindowClose_Event & event){
 		m_running = false;
-	}
-	Engine * Engine::get()
-	{
-		GAIA_EASSERT(instance, "Invalid Engine Access");
-		return instance;
-	}
-	Window * Engine::get_window()
-	{
-		Window* w = get()->m_window;
-		GAIA_EASSERT(w, "Invalid Window Access");
-		return w;
-	}
-	Renderer * Engine::get_renderer()
-	{
-		Renderer* w = get()->m_renderer;
-		GAIA_EASSERT(w, "Invalid Renderer Access");
-		return w;
-	}
-	ResourceManager * Engine::get_resources()
-	{
-		ResourceManager* w = get()->m_resources;
-		GAIA_EASSERT(w, "Invalid Resource Manager Access");
-		return w;
 	}
 }

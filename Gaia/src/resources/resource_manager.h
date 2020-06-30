@@ -1,5 +1,6 @@
 #pragma once
 #include <renderer/texture2D.h>
+#include <scene/level.h>
 
 namespace Gaia {
 
@@ -10,7 +11,7 @@ namespace Gaia {
 	using TupleMap = std::tuple<ResourceMap<Args>...>;
 
 	using ResourceMaps = TupleMap<
-		Texture2D
+		Texture2D, Level
 	>;
 
 
@@ -23,8 +24,7 @@ namespace Gaia {
 		shared<T> get(const std::string& name);
 		template<typename T>
 		ResourceMap<T>& get_map();
-
-
+		
 	private:
 		void add_resource(const std::string path, const e_Extension);
 
