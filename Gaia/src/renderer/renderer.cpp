@@ -92,7 +92,7 @@ namespace Gaia {
 			auto cam = s_session->get_active_camera();
 			mat4 p = cam->get_projection(m_viewport_size);
 			m_shader_debug->set_uniform("P", p);
-			mat4 v = glm::inverse(cam->get_owner()->get_matrix());
+			mat4 v = cam->get_view();
 			m_shader_debug->set_uniform("V", v);
 			m_shader_debug->set_uniform("M", mat4(1.0f));
 			for (auto r : m_renderables)

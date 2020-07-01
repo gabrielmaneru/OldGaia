@@ -13,6 +13,7 @@ namespace Gaia {
 		std::string get_type_name()const override { return "Camera"; }
 
 		mat4 get_projection(urect view_size)const;
+		mat4 get_view()const;
 
 	private:
 		enum class e_Projection {

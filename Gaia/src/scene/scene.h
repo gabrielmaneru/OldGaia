@@ -23,7 +23,10 @@ namespace Gaia {
 		shared<Camera> m_editor_camera;
 		shared<Camera> m_game_camera;
 		
+		friend class Editor;
+		friend class Entity;
 	private:
+		Entity* m_selected{nullptr};
 		shared<Level> m_level;
 		std::string m_name;
 		std::vector<Entity*> m_entities;

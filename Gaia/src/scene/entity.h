@@ -22,6 +22,7 @@ namespace Gaia {
 		template<typename T>
 		shared<T> add_component();
 
+		friend class Editor;
 	private:
 		template<typename T, typename>
 		friend struct Load;

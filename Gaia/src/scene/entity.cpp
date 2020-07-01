@@ -1,5 +1,6 @@
 #include "gaia_pch.h"
 #include "entity.h"
+#include <core/session.h>
 
 namespace Gaia {
 	Entity::Entity(const std::string & name)
@@ -25,6 +26,9 @@ namespace Gaia {
 			for (auto& c : m_components)
 				c.second->exit();
 			m_alive = false;
+			if (auto scn = s_session->get_current_scene())
+				if (scn->m_selected == this)
+					scn->m_selected = nullptr;
 		}
 		else
 			GAIA_ELOG_WARN("Destroying object {0} twice", m_name);

@@ -69,4 +69,8 @@ namespace Gaia {
 	{
 		return glm::perspectiveFov(glm::radians(m_fov_angle), (float)view_size.x, (float)view_size.y, m_clip_planes.x, m_clip_planes.y);
 	}
+	mat4 Camera::get_view() const
+	{
+		return glm::inverse(m_owner->get_matrix());
+	}
 }
