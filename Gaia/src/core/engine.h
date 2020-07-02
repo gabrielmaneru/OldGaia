@@ -12,6 +12,7 @@ namespace Gaia {
 		void run();
 		virtual ~Engine();
 
+		void stop_execution();
 		void on_window_close(const WindowClose_Event & event);
 
 	protected:

@@ -1,6 +1,16 @@
 #pragma once
 namespace Gaia {
 	class ImGuiLayer;
+	class Editor;
+
+	struct EditorWindow
+	{
+		typedef void(*WindowFunc)(Editor*);
+
+		bool open;
+		const char* name;
+		WindowFunc fn;
+	};
 
 	class Editor {
 	public:
@@ -11,12 +21,9 @@ namespace Gaia {
 
 	private:
 		void render_docking();
-		void render_viewport();
-		void render_hierarchy();
-		void render_inspector();
-
-		bool m_viewport{ true };
-		bool m_hierarchy{ true };
-		bool m_inspector{ true };
+		std::vector<EditorWindow> m_windows;
 	};
+	void fn_viewport(Editor* editor);
+	void fn_hierarchy(Editor* editor);
+	void fn_inspector(Editor* editor);
 }

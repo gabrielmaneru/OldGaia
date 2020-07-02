@@ -47,6 +47,10 @@ namespace Gaia {
 		ImGui_ImplGlfw_InitForOpenGL(window, true);
 		ImGui_ImplOpenGL3_Init("#version 410");
 		ImGuizmo::SetOrthographic(false);
+		
+		m_windows.emplace_back(EditorWindow{ true, "Viewport", fn_viewport });
+		m_windows.emplace_back(EditorWindow{ true, "Hierarchy", fn_hierarchy });
+		m_windows.emplace_back(EditorWindow{ true, "Inspector", fn_inspector });
 	}
 	Editor::~Editor()
 	{
@@ -106,107 +110,112 @@ namespace Gaia {
 				ImGuiDockNodeFlags_None);
 		}
 
+		// Render Menu Bar
 		if (ImGui::BeginMenuBar())
 		{
+			// General File Menu
 			if (ImGui::BeginMenu("File"))
 			{
+				if (ImGui::Button("Exit"))
+					s_engine->stop_execution();
+				ImGui::EndMenu();
+			}
+
+			// Open/Close Window
+			if (ImGui::BeginMenu("Window"))
+			{
+				for (auto& w : m_windows)
+					ImGui::Checkbox(w.name, &w.open);
 				ImGui::EndMenu();
 			}
 			ImGui::EndMenuBar();
 		}
 
-		render_hierarchy();
-		render_inspector();
-		render_viewport();
-
+		// Render every window
+		for (auto& w : m_windows)
+			if (w.open)
+			{
+				if (ImGui::Begin(w.name, &w.open))
+					w.fn(this);
+				ImGui::End();
+			}
 		ImGui::End();
 	}
-	void Editor::render_viewport()
+	void fn_viewport(Editor * editor)
 	{
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
-		if (ImGui::Begin("Viewport", &m_viewport))
-		{
-			ImVec2 windowSize = ImGui::GetContentRegionAvail();
-			ImVec2 windowPos = ImGui::GetWindowPos();
-			urect rect_win = { (u32)windowSize.x, (u32)windowSize.y };
-			s_renderer->set_viewport(rect_win);
-			ImGui::Image((ImTextureID)s_renderer->get_final_texture_id(), windowSize, { 0, 1 }, { 1, 0 });
-		
-		
-			// Gizmos
-			auto scn = s_session->get_current_scene();
-			auto selected = scn->m_selected;
-			if (/*m_GizmoType != -1 &&*/ selected)
-			{
-				static ImGuizmo::OPERATION m_operation{ ImGuizmo::TRANSLATE };
-				if (!ImGui::IsWindowHovered(ImGuiHoveredFlags_AnyWindow | ImGuiHoveredFlags_AllowWhenBlockedByActiveItem))
-				{
-					//if (input.is_key_triggered(GLFW_KEY_1))
-					//	m_operation = ImGuizmo::TRANSLATE;
-					//if (input.is_key_triggered(GLFW_KEY_2))
-					//	m_operation = ImGuizmo::ROTATE;
-				}
-				auto cam = s_session->get_active_camera();
-				ImGuizmo::SetDrawlist();
-				ImGuizmo::SetRect(windowPos.x, windowPos.y, windowSize.x, windowSize.y);
-				ImGuizmo::Manipulate(
-					&cam->get_view()[0][0],
-					&cam->get_projection(rect_win)[0][0],
-					m_operation, ImGuizmo::WORLD,
-					&selected->get_matrix()[0][0], NULL, NULL);
-			}
+		ImVec2 windowSize = ImGui::GetContentRegionAvail();
+		ImVec2 windowPos = ImGui::GetWindowPos();
+		urect rect_win = { (u32)windowSize.x, (u32)windowSize.y };
+		s_renderer->set_viewport(rect_win);
+		ImGui::Image((ImTextureID)s_renderer->get_final_texture_id(), windowSize, { 0, 1 }, { 1, 0 });
 
-			ImGui::End();
+
+		// Gizmos
+		auto scn = s_session->get_current_scene();
+		auto selected = scn->m_selected;
+		if (/*m_GizmoType != -1 &&*/ selected)
+		{
+			static ImGuizmo::OPERATION m_operation{ ImGuizmo::TRANSLATE };
+			if (!ImGui::IsWindowHovered(ImGuiHoveredFlags_AnyWindow | ImGuiHoveredFlags_AllowWhenBlockedByActiveItem))
+			{
+				//if (input.is_key_triggered(GLFW_KEY_1))
+				//	m_operation = ImGuizmo::TRANSLATE;
+				//if (input.is_key_triggered(GLFW_KEY_2))
+				//	m_operation = ImGuizmo::ROTATE;
+			}
+			auto cam = s_session->get_active_camera();
+			ImGuizmo::SetDrawlist();
+			ImGuizmo::SetRect(windowPos.x, windowPos.y, windowSize.x, windowSize.y);
+			ImGuizmo::Manipulate(
+				&cam->get_view()[0][0],
+				&cam->get_projection(rect_win)[0][0],
+				m_operation, ImGuizmo::WORLD,
+				&selected->get_matrix()[0][0], NULL, NULL);
 		}
 		ImGui::PopStyleVar();
 	}
-	void Editor::render_hierarchy()
+	void fn_hierarchy(Editor * editor)
 	{
-		if (ImGui::Begin("Hierarchy", &m_hierarchy))
-		{
-			auto scn = s_session->get_current_scene();
-			auto lvl = scn->m_level;
-			std::string name;
-			if (lvl) name = lvl->get_name();
-			else name = "Unnamed";
+		auto scn = s_session->get_current_scene();
+		auto lvl = scn->get_level();
+		std::string name;
+		if (lvl) name = lvl->get_name();
+		else name = "Unnamed";
 
-			ImGui::SetNextItemOpen(true);
-			if (ImGui::TreeNode(name.c_str()))
-			{
-				for (auto& e : scn->m_entities)
-					if(ImGui::Selectable(e->m_name.c_str(), e == scn->m_selected))
-						scn->m_selected = e;
-				ImGui::TreePop();
-			}
-			ImGui::End();
+		ImGui::SetNextItemOpen(true);
+		if (ImGui::TreeNode(name.c_str()))
+		{
+			auto entities = scn->get_entities();
+			for (auto& e : entities)
+				if (ImGui::Selectable(e->get_name().c_str(), e == scn->m_selected))
+					scn->m_selected = e;
+			ImGui::TreePop();
 		}
 	}
-	void Editor::render_inspector()
+	void fn_inspector(Editor * editor)
 	{
-		if (ImGui::Begin("Inspector", &m_inspector))
+		auto scn = s_session->get_current_scene();
+		if (scn->m_selected)
 		{
-			auto scn = s_session->get_current_scene();
-			if (scn->m_selected)
-			{
-				auto e = scn->m_selected;
+			auto e = scn->m_selected;
 
-				if (ImGui::TreeNode("Transform"))
+			if (ImGui::TreeNode("Transform"))
+			{
+				ImGui::InputFloat3("Position", &e->get_position()[0]);
+				if (ImGui::InputFloat4("Rotation", &e->get_rotation()[0]))
+					e->get_rotation() = glm::normalize(e->get_rotation());
+				ImGui::InputFloat3("Scale", &e->get_scale()[0]);
+				ImGui::TreePop();
+			}
+
+			auto cmps = e->get_component_map();
+			for (auto& c : cmps)
+				if (ImGui::TreeNode(c.second->get_type_name().c_str()))
 				{
-					ImGui::InputFloat3("Position", &e->get_position()[0]);
-					if (ImGui::InputFloat4("Rotation", &e->get_rotation()[0]))
-						e->get_rotation() = glm::normalize(e->get_rotation());
-					ImGui::InputFloat3("Scale", &e->get_scale()[0]);
+					c.second->render_editor();
 					ImGui::TreePop();
 				}
-
-				for (auto& c : e->m_components)
-					if (ImGui::TreeNode(c.second->get_type_name().c_str()))
-					{
-						c.second->render_editor();
-						ImGui::TreePop();
-					}
-			}
-			ImGui::End();
 		}
 	}
 }

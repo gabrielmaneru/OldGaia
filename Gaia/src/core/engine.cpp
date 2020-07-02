@@ -53,6 +53,11 @@ namespace Gaia {
 		m_session->end();
 	}
 
+	void Engine::stop_execution()
+	{
+		m_running = false;
+	}
+
 	void Engine::on_window_close(const WindowClose_Event & event){
 		m_running = false;
 	}

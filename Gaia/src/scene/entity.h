@@ -5,6 +5,7 @@
 namespace Gaia {
 	class Entity : public Transform3D, public Serializable {
 	public:
+
 		Entity(const std::string& name);
 		~Entity() = default;
 
@@ -14,6 +15,7 @@ namespace Gaia {
 		void serialize(Json::Value& json)const override;
 		void deserialize(const Json::Value& json)override;
 		std::string get_type_name()const override { return "Entity"; }
+		using ComponentMap = std::map<TypeInfo, shared<Component>>;
 
 		template<typename T>
 		shared<T> get_component();
@@ -21,15 +23,16 @@ namespace Gaia {
 		shared<const T> get_component()const;
 		template<typename T>
 		shared<T> add_component();
+		const std::string& get_name()const { return m_name; }
+		ComponentMap& get_component_map() { return m_components; }
 
-		friend class Editor;
 	private:
 		template<typename T, typename>
 		friend struct Load;
 		Entity() = default;
 		bool m_alive;
 		std::string m_name;
-		std::map<TypeInfo, shared<Component>> m_components;
+		 ComponentMap m_components;
 	};
 
 	template<typename T>

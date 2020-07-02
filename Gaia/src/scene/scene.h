@@ -19,16 +19,16 @@ namespace Gaia {
 		void serialize(Json::Value& json)const override;
 		void deserialize(const Json::Value& json)override;
 		std::string get_type_name()const override { return "Scene"; }
+		shared<Level> get_level() { return m_level; }
+		std::vector<Entity*>& get_entities() { return m_entities; }
 
 		shared<Camera> m_editor_camera;
 		shared<Camera> m_game_camera;
+		Entity* m_selected{nullptr};
 		
-		friend class Editor;
 		friend class Entity;
 	private:
-		Entity* m_selected{nullptr};
 		shared<Level> m_level;
-		std::string m_name;
 		std::vector<Entity*> m_entities;
 	};
 }
