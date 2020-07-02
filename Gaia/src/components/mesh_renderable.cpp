@@ -1,5 +1,9 @@
 #include "gaia_pch.h"
 #include "mesh_renderable.h"
+#include <scene/entity.h>
+
+#include <imgui/imgui.h>
+
 namespace Gaia {
 	void MeshRenderable::initialize()
 	{
@@ -14,9 +18,14 @@ namespace Gaia {
 	void MeshRenderable::update(float dt)
 	{
 	}
-	void MeshRenderable::draw() const
+	void MeshRenderable::draw(Shader * shader) const
 	{
+		shader->set_uniform("M", m_owner->get_matrix());
 		m_model->draw();
+	}
+	void MeshRenderable::render_editor()
+	{
+		ImGui::Text(m_model->get_name().c_str());
 	}
 	void MeshRenderable::exit()
 	{

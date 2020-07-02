@@ -18,7 +18,7 @@ namespace Gaia {
 			for (auto& c : m_components)
 				c.second->update(dt);
 	}
-
+	
 	void Entity::exit()
 	{
 		if (m_alive)

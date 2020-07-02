@@ -46,6 +46,7 @@ namespace Gaia {
 		// Setup Platform/Renderer bindings
 		ImGui_ImplGlfw_InitForOpenGL(window, true);
 		ImGui_ImplOpenGL3_Init("#version 410");
+		ImGuizmo::SetOrthographic(false);
 	}
 	Editor::~Editor()
 	{
@@ -123,40 +124,40 @@ namespace Gaia {
 	void Editor::render_viewport()
 	{
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
-		ImGui::Begin("Viewport");
-
-		auto viewportOffset = ImGui::GetCursorPos(); // includes tab bar
-		auto viewportSize = ImGui::GetContentRegionAvail();
-		s_renderer->set_viewport(urect{ (u32)viewportSize.x, (u32)viewportSize.y });
-		ImGui::Image((ImTextureID)s_renderer->get_final_texture_id(), viewportSize, { 0, 1 }, { 1, 0 });
-		
-		static int counter = 0;
-		auto windowSize = ImGui::GetWindowSize();
-		ImVec2 minBound = ImGui::GetWindowPos();
-		minBound.x += viewportOffset.x;
-		minBound.y += viewportOffset.y;
-		
-		// Gizmos
-		auto scn = s_session->get_current_scene();
-		auto selected = scn->m_selected;
-		if (/*m_GizmoType != -1 &&*/ selected)
+		if (ImGui::Begin("Viewport", &m_viewport))
 		{
-			float rw = (float)ImGui::GetWindowWidth();
-			float rh = (float)ImGui::GetWindowHeight();
-			ImGuizmo::SetOrthographic(false);
-			ImGuizmo::SetDrawlist();
-			ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, rw, rh);
+			ImVec2 windowSize = ImGui::GetContentRegionAvail();
+			ImVec2 windowPos = ImGui::GetWindowPos();
+			urect rect_win = { (u32)windowSize.x, (u32)windowSize.y };
+			s_renderer->set_viewport(rect_win);
+			ImGui::Image((ImTextureID)s_renderer->get_final_texture_id(), windowSize, { 0, 1 }, { 1, 0 });
+		
+		
+			// Gizmos
+			auto scn = s_session->get_current_scene();
+			auto selected = scn->m_selected;
+			if (/*m_GizmoType != -1 &&*/ selected)
+			{
+				static ImGuizmo::OPERATION m_operation{ ImGuizmo::TRANSLATE };
+				if (!ImGui::IsWindowHovered(ImGuiHoveredFlags_AnyWindow | ImGuiHoveredFlags_AllowWhenBlockedByActiveItem))
+				{
+					//if (input.is_key_triggered(GLFW_KEY_1))
+					//	m_operation = ImGuizmo::TRANSLATE;
+					//if (input.is_key_triggered(GLFW_KEY_2))
+					//	m_operation = ImGuizmo::ROTATE;
+				}
+				auto cam = s_session->get_active_camera();
+				ImGuizmo::SetDrawlist();
+				ImGuizmo::SetRect(windowPos.x, windowPos.y, windowSize.x, windowSize.y);
+				ImGuizmo::Manipulate(
+					&cam->get_view()[0][0],
+					&cam->get_projection(rect_win)[0][0],
+					m_operation, ImGuizmo::WORLD,
+					&selected->get_matrix()[0][0], NULL, NULL);
+			}
 
-			auto cam = scn->m_editor_camera;
-			ImGuizmo::Manipulate(glm::value_ptr(cam->get_view()), glm::value_ptr(cam->get_projection(s_renderer->m_viewport_size)),
-				ImGuizmo::OPERATION::TRANSLATE,
-				ImGuizmo::WORLD,
-				glm::value_ptr(selected->get_matrix()),
-				nullptr,
-				nullptr);
+			ImGui::End();
 		}
-
-		ImGui::End();
 		ImGui::PopStyleVar();
 	}
 	void Editor::render_hierarchy()
@@ -169,6 +170,7 @@ namespace Gaia {
 			if (lvl) name = lvl->get_name();
 			else name = "Unnamed";
 
+			ImGui::SetNextItemOpen(true);
 			if (ImGui::TreeNode(name.c_str()))
 			{
 				for (auto& e : scn->m_entities)
@@ -186,7 +188,23 @@ namespace Gaia {
 			auto scn = s_session->get_current_scene();
 			if (scn->m_selected)
 			{
-				//for(auto)
+				auto e = scn->m_selected;
+
+				if (ImGui::TreeNode("Transform"))
+				{
+					ImGui::InputFloat3("Position", &e->get_position()[0]);
+					if (ImGui::InputFloat4("Rotation", &e->get_rotation()[0]))
+						e->get_rotation() = glm::normalize(e->get_rotation());
+					ImGui::InputFloat3("Scale", &e->get_scale()[0]);
+					ImGui::TreePop();
+				}
+
+				for (auto& c : e->m_components)
+					if (ImGui::TreeNode(c.second->get_type_name().c_str()))
+					{
+						c.second->render_editor();
+						ImGui::TreePop();
+					}
 			}
 			ImGui::End();
 		}

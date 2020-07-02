@@ -10,7 +10,8 @@ namespace Gaia {
 		void initialize()override;
 		void enter()override;
 		void update(float dt)override;
-		void draw()const override;
+		void draw(Shader * shader)const override;
+		void render_editor()override;
 		void exit()override;
 		void serialize(Json::Value& json)const override;
 		void deserialize(const Json::Value& json)override;

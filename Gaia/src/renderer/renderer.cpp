@@ -94,9 +94,8 @@ namespace Gaia {
 			m_shader_debug->set_uniform("P", p);
 			mat4 v = cam->get_view();
 			m_shader_debug->set_uniform("V", v);
-			m_shader_debug->set_uniform("M", mat4(1.0f));
 			for (auto r : m_renderables)
-				r->draw();
+				r->draw(m_shader_debug);
 		}
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}

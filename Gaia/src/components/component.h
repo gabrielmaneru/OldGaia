@@ -10,6 +10,7 @@ namespace Gaia {
 		virtual void initialize() {}
 		virtual void enter() {}
 		virtual void update(float dt) {}
+		virtual void render_editor() {}
 		virtual void exit() {}
 		template<typename T>
 		void check_dependency();
