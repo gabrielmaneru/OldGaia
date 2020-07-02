@@ -47,7 +47,7 @@ namespace Gaia {
 		tuple_for_each(m_resources, [](auto& map) {
 			for (auto& res : map) {
 				if (res.second->is_loaded())
-					res.second->unload();
+					res.second->unload_resource();
 			}
 		});
 	}

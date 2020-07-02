@@ -1,5 +1,6 @@
 #pragma once
 #include <renderer/texture2D.h>
+#include <renderer/Material.h>
 #include <scene/level.h>
 
 namespace Gaia {
@@ -11,7 +12,7 @@ namespace Gaia {
 	using TupleMap = std::tuple<ResourceMap<Args>...>;
 
 	using ResourceMaps = TupleMap<
-		Texture2D, Level
+		Texture2D, Material, Level
 	>;
 
 
@@ -39,7 +40,7 @@ namespace Gaia {
 			return nullptr;
 
 		if (!key->second->is_loaded())
-			key->second->load();
+			key->second->load_resource();
 		return shared<T>{key->second};
 	}
 	template<typename T>

@@ -33,6 +33,9 @@ namespace Gaia {
 				case e_Extension::level:
 					ext_name = "level";
 					break;
+				case e_Extension::mtl:
+					ext_name = "mtl";
+					break;
 				}
 
 				if (cur_ext == ext_name)

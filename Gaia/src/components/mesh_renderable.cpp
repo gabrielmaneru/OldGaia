@@ -1,6 +1,7 @@
 #include "gaia_pch.h"
 #include "mesh_renderable.h"
 #include <scene/entity.h>
+#include <core/session.h>
 
 #include <imgui/imgui.h>
 
@@ -14,12 +15,23 @@ namespace Gaia {
 		register_renderable();
 		m_model = new Model("assets/meshes/cube.obj", e_Extension::obj);
 		m_model->load_internal();
+
+		m_material = s_resources->get<Material>("grass");
+		if (!m_material)
+		{
+			Material::create("grass");
+			m_material = s_resources->get<Material>("grass");
+			m_material->save_material();
+		}
 	}
 	void MeshRenderable::update(float dt)
 	{
 	}
 	void MeshRenderable::draw(Shader * shader) const
 	{
+		if (!m_visible)
+			return;
+
 		shader->set_uniform("M", m_owner->get_matrix());
 		m_model->draw();
 	}

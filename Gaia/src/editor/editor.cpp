@@ -179,12 +179,11 @@ namespace Gaia {
 	{
 		auto scn = s_session->get_current_scene();
 		auto lvl = scn->get_level();
-		std::string name;
-		if (lvl) name = lvl->get_name();
-		else name = "Unnamed";
+		std::string name{"Scene: "};
+		if (lvl) name += lvl->get_name();
+		else name += "Unnamed";
 
-		ImGui::SetNextItemOpen(true);
-		if (ImGui::TreeNode(name.c_str()))
+		if (ImGui::TreeNodeEx(name.c_str(), ImGuiTreeNodeFlags_DefaultOpen))
 		{
 			auto entities = scn->get_entities();
 			for (auto& e : entities)
@@ -200,6 +199,13 @@ namespace Gaia {
 		{
 			auto e = scn->m_selected;
 
+			char buf[100];
+			strcpy(buf, e->get_name().c_str());
+			ImGui::Text("Name");
+			ImGui::SameLine();
+			if(ImGui::InputText("##hide_label", buf, 100))
+				e->set_name(buf);
+			ImGui::Separator();
 			if (ImGui::TreeNode("Transform"))
 			{
 				ImGui::InputFloat3("Position", &e->get_position()[0]);

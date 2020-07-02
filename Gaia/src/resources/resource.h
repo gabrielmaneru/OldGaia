@@ -9,8 +9,8 @@ namespace Gaia {
 	public:
 		Resource(const std::string& path, e_Extension ext, bool loaded = false);
 
-		void load();
-		void unload();
+		void load_resource();
+		void unload_resource();
 
 		bool is_loaded()const { return m_loaded; }
 		const std::string& get_name()const { return m_name; }

@@ -10,6 +10,7 @@ namespace Gaia {
 		jpg,
 		obj,
 		level,
+		mtl,
 		end
 	};
 	inline e_Extension operator++(e_Extension&x);

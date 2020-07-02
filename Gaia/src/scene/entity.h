@@ -24,6 +24,7 @@ namespace Gaia {
 		template<typename T>
 		shared<T> add_component();
 		const std::string& get_name()const { return m_name; }
+		void set_name(const std::string& name) { m_name=name; }
 		ComponentMap& get_component_map() { return m_components; }
 
 	private:

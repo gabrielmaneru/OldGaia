@@ -7,7 +7,7 @@ namespace Gaia {
 		: m_loaded(loaded), m_path(path),
 		m_name(get_name_from_path(path)),
 		m_extension(ext) {}
-	void Resource::load()
+	void Resource::load_resource()
 	{
 		if (m_loaded)
 			GAIA_ELOG_WARN("Loading twice {0} at {1}", m_name, m_path);
@@ -17,7 +17,7 @@ namespace Gaia {
 		if(!m_loaded)
 			GAIA_ELOG_WARN("Couldn't load {0} at {1}", m_name, m_path);
 	}
-	void Resource::unload()
+	void Resource::unload_resource()
 	{
 		if (!m_loaded)
 			GAIA_ELOG_WARN("Unloading twice {0} at {1}", m_name, m_path);

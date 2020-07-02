@@ -52,6 +52,5 @@ namespace Gaia {
 
 		map[name] = new_shared<Level>("assets/levels/" + name + ".level", e_Extension::level, true);
 		map[name]->m_data.clear();
-		//map[name]->save_level(scn);
 	}
 }
