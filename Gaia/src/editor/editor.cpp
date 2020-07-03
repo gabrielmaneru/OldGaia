@@ -25,7 +25,7 @@ namespace Gaia {
 		//io.ConfigFlags |= ImGuiConfigFlags_ViewportsNoTaskBarIcons;
 		//io.ConfigFlags |= ImGuiConfigFlags_ViewportsNoMerge;
 
-		ImFont* pFont = io.Fonts->AddFontFromFileTTF("assets/fonts/NotoSans-Regular.ttf", 24.0f);
+		ImFont* pFont = io.Fonts->AddFontFromFileTTF("assets/fonts/NotoSans-Regular.ttf", 20.0f);
 		io.FontDefault = io.Fonts->Fonts.back();
 
 		// Setup Dear ImGui style
@@ -130,7 +130,7 @@ namespace Gaia {
 			}
 			ImGui::EndMenuBar();
 		}
-
+		ImGui::ShowDemoWindow();
 		// Render every window
 		for (auto& w : m_windows)
 			if (w.open)
@@ -222,6 +222,112 @@ namespace Gaia {
 					c.second->render_editor();
 					ImGui::TreePop();
 				}
+		}
+	}
+	void select_material(shared<Material>& material_slot)
+	{
+		if (ImGui::BeginPopup("select_material"))
+		{
+			static ImGuiTextFilter filter;
+			filter.Draw();
+			auto map = s_resources->get_map<Material>();
+			for (auto& key : map)
+				if (filter.PassFilter(key.first.c_str()))
+					if (ImGui::Selectable(key.first.c_str(),
+						material_slot? key.first==material_slot->get_name():false))
+						material_slot = s_resources->get<Material>(key.first.c_str());
+			ImGui::EndPopup();
+		}
+	}
+	void select_texture(shared<Texture2D>& texture_slot)
+	{
+		if (ImGui::BeginPopup("select_texture"))
+		{
+			static ImGuiTextFilter filter;
+			filter.Draw();
+			auto map = s_resources->get_map<Texture2D>();
+			for (auto& key : map)
+				if (filter.PassFilter(key.first.c_str()))
+					if (ImGui::Selectable(key.first.c_str(),
+						texture_slot ? key.first == texture_slot->get_name() : false))
+						texture_slot = s_resources->get<Texture2D>(key.first.c_str());
+			ImGui::EndPopup();
+		}
+	}
+	void edit_material(shared<Material>& material_slot)
+	{
+		if (ImGui::BeginPopupModal("edit_material"))
+		{
+			ImGui::Text("Material: "); ImGui::SameLine();
+			ImGui::Text(material_slot->get_name().c_str());
+			ImGui::Separator();
+
+			static int slot = 0;
+			auto show = [](shared<Texture2D>& txt, int slot_)
+			{
+				ImGui::PushID(slot_);
+				std::string name;
+				if (txt)
+					name = txt->get_name();
+				else
+					name = "...";
+				if (ImGui::Button(name.c_str()))
+					ImGui::OpenPopup("select_texture"), slot = slot_;
+				ImGui::PopID();
+			};
+			{
+				ImGui::Checkbox("Albedo", &material_slot->m_texture_active[0]);
+				ImGui::SameLine();
+				if (material_slot->m_texture_active[0])
+					show(material_slot->m_albedo_texture, 0);
+				else
+					ImGui::ColorEdit3("##hide_label", &material_slot->m_albedo_color.x);
+			}
+			{
+				ImGui::Checkbox("Metallic", &material_slot->m_texture_active[1]);
+				ImGui::SameLine();
+				if (material_slot->m_texture_active[1])
+					show(material_slot->m_metallic_texture, 1);
+				else
+					ImGui::ColorEdit3("##hide_label", &material_slot->m_metallic_color.x);
+			}
+			{
+				ImGui::Checkbox("Roughness", &material_slot->m_texture_active[2]);
+				ImGui::SameLine();
+				if (material_slot->m_texture_active[2])
+					show(material_slot->m_roughness_texture, 2);
+				else
+					ImGui::SliderFloat("##hide_label", &material_slot->m_roughness_color, 0.0f, 1.0f);
+			}
+			{
+				ImGui::Checkbox("Normal", &material_slot->m_texture_active[3]);
+				ImGui::SameLine();
+				if (material_slot->m_texture_active[3])
+					show(material_slot->m_normal_texture, 3);
+			}
+			ImGui::PushID(slot);
+			switch (slot)
+			{
+			case 0:
+				select_texture(material_slot->m_albedo_texture);
+				break;
+			case 1:
+				select_texture(material_slot->m_metallic_texture);
+				break;
+			case 2:
+				select_texture(material_slot->m_roughness_texture);
+				break;
+			case 3:
+				select_texture(material_slot->m_normal_texture);
+				break;
+			}
+			ImGui::PopID();
+
+			ImGui::NewLine();
+			if (ImGui::Button("Save", ImVec2(120, 0)))
+				ImGui::CloseCurrentPopup(), material_slot->save_material();
+
+			ImGui::EndPopup();
 		}
 	}
 }

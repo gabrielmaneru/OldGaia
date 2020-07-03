@@ -37,7 +37,23 @@ namespace Gaia {
 	}
 	void MeshRenderable::render_editor()
 	{
-		ImGui::Text(m_model->get_name().c_str());
+		ImGui::Text("Model"); ImGui::SameLine();
+		ImGui::Selectable(m_model->get_name().c_str());
+
+		ImGui::Text("Material"); ImGui::SameLine();
+		std::string name;
+		if (m_material)
+			name = m_material->get_name();
+		else
+			name = "...";
+		if (ImGui::Button(name.c_str()))
+			ImGui::OpenPopup("select_material");
+		ImGui::SameLine();
+		if (m_material && ImGui::Button("Edit"))
+			ImGui::OpenPopup("edit_material");
+		select_material(m_material);
+		edit_material(m_material);
+		
 	}
 	void MeshRenderable::exit()
 	{

@@ -18,32 +18,43 @@ namespace Gaia {
 		Json::Value data;
 		file >> data;
 
+		load(m_texture_active[0], data["AlbedoActive"]);
+		if (m_texture_active[0])
 		{
 			std::string name;
 			load(name, data["AlbedoTexture"]);
 			m_albedo_texture = s_resources->get<Texture2D>(name);
 		}
+		else
+			load(m_albedo_color, data["AlbedoColor"]);
+
+		load(m_texture_active[1], data["MetallicActive"]);
+		if (m_texture_active[1])
 		{
 			std::string name;
 			load(name, data["MetallicTexture"]);
 			m_metallic_texture = s_resources->get<Texture2D>(name);
 		}
+		else
+			load(m_metallic_color, data["MetallicColor"]);
+
+		load(m_texture_active[2], data["RoughnessActive"]);
+		if (m_texture_active[2])
 		{
 			std::string name;
 			load(name, data["RoughnessTexture"]);
 			m_roughness_texture = s_resources->get<Texture2D>(name);
 		}
+		else
+			load(m_roughness_color, data["RoughnessColor"]);
+
+		load(m_texture_active[3], data["NormalActive"]);
+		if (m_texture_active[3])
 		{
 			std::string name;
 			load(name, data["NormalTexture"]);
 			m_normal_texture = s_resources->get<Texture2D>(name);
 		}
-		if (!m_albedo_texture)
-			load(m_albedo_color, data["AlbedoColor"]);
-		if (!m_metallic_texture)
-			load(m_metallic_color, data["MetallicColor"]);
-		if (!m_roughness_color)
-			load(m_roughness_color, data["RoughnessColor"]);
 
 		return true;
 	}
@@ -56,22 +67,26 @@ namespace Gaia {
 	{
 		Json::Value data;
 
-		if(m_albedo_texture)
+		save(m_texture_active[0], data["AlbedoActive"]);
+		if(m_texture_active[0])
 			save(m_albedo_texture->get_name(), data["AlbedoTexture"]);
 		else
 			save(m_albedo_color, data["AlbedoColor"]);
 
-		if (m_metallic_texture)
+		save(m_texture_active[1], data["MetallicActive"]);
+		if (m_texture_active[1])
 			save(m_metallic_texture->get_name(), data["MetallicTexture"]);
 		else
 			save(m_metallic_color, data["MetallicColor"]);
 
-		if (m_roughness_texture)
+		save(m_texture_active[2], data["RoughnessActive"]);
+		if (m_texture_active[2])
 			save(m_roughness_texture->get_name(), data["RoughnessTexture"]);
 		else
 			save(m_roughness_color, data["RoughnessColor"]);
 
-		if (m_normal_texture)
+		save(m_texture_active[3], data["NormalActive"]);
+		if (m_texture_active[3])
 			save(m_normal_texture->get_name(), data["NormalTexture"]);
 
 		std::ofstream file(m_path);
