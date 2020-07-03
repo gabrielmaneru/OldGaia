@@ -148,7 +148,14 @@ namespace Gaia {
 		ImVec2 windowPos = ImGui::GetWindowPos();
 		urect rect_win = { (u32)windowSize.x, (u32)windowSize.y };
 		s_renderer->set_viewport(rect_win);
-		ImGui::Image((ImTextureID)s_renderer->get_final_texture_id(), windowSize, { 0, 1 }, { 1, 0 });
+
+		ImGui::Image((ImTextureID)s_renderer->get_final_texture_id(0), windowSize, { 0, 1 }, { 1, 0 });
+		ImGui::Separator();
+		ImGui::Image((ImTextureID)s_renderer->get_final_texture_id(1), windowSize, { 0, 1 }, { 1, 0 });
+		ImGui::Separator();
+		ImGui::Image((ImTextureID)s_renderer->get_final_texture_id(2), windowSize, { 0, 1 }, { 1, 0 });
+		ImGui::Separator();
+		ImGui::Image((ImTextureID)s_renderer->get_final_texture_id(3), windowSize, { 0, 1 }, { 1, 0 });
 
 
 		// Gizmos
@@ -224,12 +231,39 @@ namespace Gaia {
 				}
 		}
 	}
+	bool insert_name(char * buf, u32 buf_size)
+	{
+		bool save = false;
+		if (ImGui::BeginPopupModal("insert_name"))
+		{
+			ImGui::Text("Name: ");
+			ImGui::SameLine();
+			ImGui::InputText("##hide_label", buf, buf_size);
+			ImGui::Separator();
+			if (ImGui::Button("Save"))
+				ImGui::CloseCurrentPopup(), save = true;
+			ImGui::SameLine();
+			if (ImGui::Button("Close"))
+				ImGui::CloseCurrentPopup();
+			ImGui::EndPopup();
+		}
+		return save;
+	}
 	void select_material(shared<Material>& material_slot)
 	{
 		if (ImGui::BeginPopup("select_material"))
 		{
 			static ImGuiTextFilter filter;
 			filter.Draw();
+			ImGui::SameLine();
+			static char buf[100];
+			if (ImGui::Button("Add"))
+				ImGui::OpenPopup("insert_name"), memset(buf, 0, sizeof(buf));
+			
+			if (insert_name(buf, 100))
+				Material::create(buf);
+
+
 			auto map = s_resources->get_map<Material>();
 			for (auto& key : map)
 				if (filter.PassFilter(key.first.c_str()))
@@ -289,7 +323,7 @@ namespace Gaia {
 				if (material_slot->m_texture_active[1])
 					show(material_slot->m_metallic_texture, 1);
 				else
-					ImGui::ColorEdit3("##hide_label", &material_slot->m_metallic_color.x);
+					ImGui::SliderFloat("##hide_label", &material_slot->m_metallic_color, 0.f, 1.f);
 			}
 			{
 				ImGui::Checkbox("Roughness", &material_slot->m_texture_active[2]);

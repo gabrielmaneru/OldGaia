@@ -24,4 +24,3 @@
 #include <core/type_info.h>
 #include <debug/log_manager.h>
 #include <scene/serialize_functions.h>
-

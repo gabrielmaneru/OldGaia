@@ -14,6 +14,7 @@ namespace Gaia {
 		void draw(Shader * shader)const override;
 		void render_editor()override;
 		void exit()override;
+
 		void serialize(Json::Value& json)const override;
 		void deserialize(const Json::Value& json)override;
 		std::string get_type_name()const override { return "MeshRenderable"; }

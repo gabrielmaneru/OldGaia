@@ -3,6 +3,7 @@
 #include <renderer/texture2D.h>
 
 namespace Gaia {
+	class Shader;
 	class Material : public Resource
 	{
 	public:
@@ -12,6 +13,8 @@ namespace Gaia {
 		bool load_internal()override;
 		bool unload_internal()override;
 		void save_material()const;
+		void set_material(Shader* shader);
+		static void set_def_material(Shader* shader);
 		static void create(const std::string& name);
 
 		bool m_texture_active[4]{false};
@@ -22,7 +25,7 @@ namespace Gaia {
 		shared<Texture2D> m_normal_texture;
 
 		vec3 m_albedo_color = vec3(1.f, 1.f, 1.f);
-		vec3 m_metallic_color = vec3(0.f, 0.f, 0.f);
+		float m_metallic_color = 0.0f;
 		float m_roughness_color = 1.0f;
 	};
 }

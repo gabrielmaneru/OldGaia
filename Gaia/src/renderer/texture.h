@@ -36,6 +36,9 @@ namespace Gaia {
 		static TextureProps default_color_rgb;
 		static TextureProps default_depth;
 
+		static TextureProps gbuffer_rgb;
+		static TextureProps gbuffer_rg;
+
 	protected:
 		void reset_id();
 		void set_sampler_properties();

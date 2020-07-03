@@ -33,6 +33,10 @@ namespace Gaia {
 			return;
 
 		shader->set_uniform("M", m_owner->get_matrix());
+		if (m_material)
+			m_material->set_material(shader);
+		else
+			Material::set_def_material(shader);
 		m_model->draw();
 	}
 	void MeshRenderable::render_editor()

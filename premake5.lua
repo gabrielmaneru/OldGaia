@@ -101,7 +101,6 @@ project "Gaia_Sandbox"
 	language "C++"
 	cppdialect "C++17"
 	staticruntime "on"
-	ignoredefaultlibraries { "libcmt" }
 	
 	debugdir ("build-bin/" .. outputdir .. "/%{prj.name}")
 	targetdir ("build-bin/" .. outputdir .. "/%{prj.name}")

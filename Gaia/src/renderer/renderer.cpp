@@ -46,56 +46,70 @@ namespace Gaia {
 				"assets/shaders/debug.vert",
 				"assets/shaders/debug.frag"
 		});
-		m_fb = new Framebuffer(s_window->get_canvas(),
+		m_shader_gbuffer = new Shader("GBuffer",
+			std::vector<std::string>{
+				"assets/shaders/gbuffer.vert",
+				"assets/shaders/gbuffer.frag"
+		});
+		m_gbuffer = new Framebuffer(urect{ 1920, 1080 },
+			FramebufferProperties{
+				Texture::gbuffer_rgb,
+				Texture::gbuffer_rgb,
+				Texture::gbuffer_rg,
+				Texture::gbuffer_rgb
+				});
+		m_fb_final = new Framebuffer(s_window->get_canvas(),
 			FramebufferProperties{
 				Texture::default_color_rgba,
 				Texture::default_depth
 			});
 
-		float vertices[] = {
-						-1.f, -1.f,
-						 3.f, -1.f,
-						-1.f,  3.f,
-		};
-		unsigned int VBO;
-		glGenVertexArrays(1, &vao);
-		glBindVertexArray(vao);
 
-		glGenBuffers(1, &VBO);
-		glBindBuffer(GL_ARRAY_BUFFER, VBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+		//float vertices[] = {
+		//				-1.f, -1.f,
+		//				 3.f, -1.f,  /* QUAD */
+		//				-1.f,  3.f,
+		//};
+		//unsigned int VBO;
+		//glGenVertexArrays(1, &vao);
+		//glBindVertexArray(vao);
+		//
+		//glGenBuffers(1, &VBO);
+		//glBindBuffer(GL_ARRAY_BUFFER, VBO);
+		//glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+		//
+		//glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
+		//glEnableVertexAttribArray(0);
+		//glBindVertexArray(0);
 
-		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
-		glEnableVertexAttribArray(0);
-		glBindVertexArray(0);
+	}
 
+	Renderer::~Renderer()
+	{
+		delete m_shader_debug;
+		delete m_shader_gbuffer;
+		delete m_gbuffer;
+		delete m_fb_final;
 	}
 
 
 	void Renderer::render()
 	{
-		// Clear Full Window
-		//urect canvas = Engine::get_window()->get_canvas();
-		//glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		//glViewport(0, 0, canvas.x, canvas.y);
-		//glClearColor(1.f, 0.f, 0.f, 0.f);
-		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		// Render To FB
-		m_fb->bind();
-		glClearColor(1.f, 0.f, 0.f, 0.f);
+		// Render To GBuffer
+		m_gbuffer->bind();
+		glClearColor(0.f, 0.f, 0.f, 0.f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		if (s_session->get_current_scene())
 		{
-			m_shader_debug->bind();
+			m_shader_gbuffer->bind();
 			auto cam = s_session->get_active_camera();
 			mat4 p = cam->get_projection(m_viewport_size);
-			m_shader_debug->set_uniform("P", p);
+			m_shader_gbuffer->set_uniform("P", p);
 			mat4 v = cam->get_view();
-			m_shader_debug->set_uniform("V", v);
+			m_shader_gbuffer->set_uniform("V", v);
 			for (auto r : m_renderables)
-				r->draw(m_shader_debug);
+				r->draw(m_shader_gbuffer);
 		}
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
@@ -120,12 +134,13 @@ namespace Gaia {
 
 	void Renderer::set_viewport(urect size)
 	{
+		size.x = glm::clamp((int)size.x, 8, 8192);
+		size.y = glm::clamp((int)size.y, 8, 8192);
 		m_viewport_size = size;
-		m_fb->resize(size);
+		m_fb_final->resize(size);
 	}
-
-	u32 Renderer::get_final_texture_id() const
+	u32 Renderer::get_final_texture_id(u32 id) const
 	{
-		return m_fb->get_txt_id(0);
+		return m_gbuffer->get_txt_id(id);
 	}
 }

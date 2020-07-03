@@ -31,9 +31,7 @@ namespace Gaia {
 	void Model::draw() const
 	{
 		for (auto& m : m_meshes)
-		{
 			m->draw();
-		}
 	}
 
 	bool Model::load_internal()

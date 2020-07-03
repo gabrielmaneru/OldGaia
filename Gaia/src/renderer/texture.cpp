@@ -104,20 +104,31 @@ namespace Gaia {
 		e_InternalFormat::RGBA,
 		e_PixelFormat::RGBA,
 		e_DataType::UnsignedByte,
-		e_Wrap::Clamp,
+		e_Wrap::Repeat,
 		e_Filter::Nearest, e_Filter::Nearest);
-
 	TextureProps Texture::default_color_rgb = TextureProps(
 		e_InternalFormat::RGB,
 		e_PixelFormat::RGB,
 		e_DataType::UnsignedByte,
-		e_Wrap::Clamp,
+		e_Wrap::Repeat,
 		e_Filter::Nearest, e_Filter::Nearest);
-
 	TextureProps Texture::default_depth = TextureProps(
 		e_InternalFormat::Depth,
 		e_PixelFormat::Depth,
 		e_DataType::Float,
+		e_Wrap::Clamp,
+		e_Filter::Nearest, e_Filter::Nearest);
+
+	TextureProps Texture::gbuffer_rgb = TextureProps(
+		e_InternalFormat::hRGBf,
+		e_PixelFormat::RGB,
+		e_DataType::hFloat,
+		e_Wrap::Clamp,
+		e_Filter::Nearest, e_Filter::Nearest);
+	TextureProps Texture::gbuffer_rg = TextureProps(
+		e_InternalFormat::hRGf,
+		e_PixelFormat::RG,
+		e_DataType::hFloat,
 		e_Wrap::Clamp,
 		e_Filter::Nearest, e_Filter::Nearest);
 }

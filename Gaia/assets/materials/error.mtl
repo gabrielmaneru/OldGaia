@@ -1,0 +1,9 @@
+{
+	"AlbedoActive" : true,
+	"AlbedoTexture" : "error",
+	"MetallicActive" : true,
+	"MetallicTexture" : "error",
+	"NormalActive" : false,
+	"RoughnessActive" : true,
+	"RoughnessTexture" : "error"
+}

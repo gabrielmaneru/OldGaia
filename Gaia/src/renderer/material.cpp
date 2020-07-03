@@ -1,6 +1,9 @@
 #include "gaia_pch.h"
 #include "material.h"
 #include <core/session.h>
+#include <renderer/shader.h>
+
+#include <Glad/glad.h>
 
 namespace Gaia {
 	bool Material::load_internal()
@@ -91,6 +94,47 @@ namespace Gaia {
 
 		std::ofstream file(m_path);
 		file << data;
+	}
+	void Material::set_material(Shader * shader)
+	{
+		shader->set_uniform("active_albedo_txt", m_texture_active[0]);
+		if (m_texture_active[0] && m_albedo_texture)
+		{
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, m_albedo_texture->get_id());
+		}
+		else
+			shader->set_uniform("albedo_color", m_albedo_color);
+
+		shader->set_uniform("active_metallic_txt", m_texture_active[1]);
+		if (m_texture_active[1] && m_metallic_texture)
+		{
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, m_metallic_texture->get_id());
+		}
+		else
+			shader->set_uniform("metallic_value", m_metallic_color);
+
+		shader->set_uniform("active_roughness_txt", m_texture_active[2]);
+		if (m_texture_active[2] && m_roughness_texture)
+		{
+			glActiveTexture(GL_TEXTURE2);
+			glBindTexture(GL_TEXTURE_2D, m_roughness_texture->get_id());
+		}
+		else
+			shader->set_uniform("roughness_value", m_roughness_color);
+
+		shader->set_uniform("active_normal_txt", m_texture_active[3]);
+		if (m_texture_active[3] && m_normal_texture)
+		{
+			glActiveTexture(GL_TEXTURE3);
+			glBindTexture(GL_TEXTURE_2D, m_normal_texture->get_id());
+		}
+
+	}
+	void Material::set_def_material(Shader * shader)
+	{
+		s_resources->get<Material>("error")->set_material(shader);
 	}
 	void Material::create(const std::string & name)
 	{
