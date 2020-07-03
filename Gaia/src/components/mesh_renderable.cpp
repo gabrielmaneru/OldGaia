@@ -15,14 +15,6 @@ namespace Gaia {
 		register_renderable();
 		m_model = new Model("assets/meshes/cube.obj", e_Extension::obj);
 		m_model->load_internal();
-
-		m_material = s_resources->get<Material>("grass");
-		if (!m_material)
-		{
-			Material::create("grass");
-			m_material = s_resources->get<Material>("grass");
-			m_material->save_material();
-		}
 	}
 	void MeshRenderable::update(float dt)
 	{

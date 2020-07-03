@@ -3,7 +3,8 @@
 	"AlbedoTexture" : "error",
 	"MetallicActive" : true,
 	"MetallicTexture" : "error",
-	"NormalActive" : false,
+	"NormalActive" : true,
+	"NormalTexture" : "error",
 	"RoughnessActive" : true,
 	"RoughnessTexture" : "error"
 }
