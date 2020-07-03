@@ -29,6 +29,7 @@ namespace Gaia {
 	void fn_viewport(Editor* editor);
 	void fn_hierarchy(Editor* editor);
 	void fn_inspector(Editor* editor);
+	void fn_render_buffers(Editor* editor);
 
 	bool insert_name(char* buf, u32 buf_size);
 	void select_material(shared<Material>& material_slot);

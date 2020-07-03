@@ -64,5 +64,6 @@ void main()
 	fb_position = v_position;
 	fb_albedo = albedo;
 	fb_metallic_roughness = vec2(metallic, roughness);
+	fb_metallic_roughness = v_uv;
 	fb_normal = normal;
 }

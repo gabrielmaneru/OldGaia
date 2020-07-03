@@ -101,7 +101,8 @@ namespace Gaia {
 
 		// Copy vertex texture coordinates
 		if (ai_mesh->HasTextureCoords(0))
-			std::memcpy(vb.m_uv_coord.data(), ai_mesh->mTextureCoords[0], vtx_count * sizeof(vec2));
+			for(u32 v =0; v < vtx_count; ++v)
+				std::memcpy(&vb.m_uv_coord[v], &ai_mesh->mTextureCoords[0][v], sizeof(vec2));
 
 		// Copy vertex tangents & bitangents
 		if(ai_mesh->HasTangentsAndBitangents())

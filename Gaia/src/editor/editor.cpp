@@ -19,31 +19,17 @@ namespace Gaia {
 		// Configuration
 		ImGuiIO& io = ImGui::GetIO();
 		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;       // Enable Keyboard Controls
-		//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
-		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Windows
-		//io.ConfigFlags |= ImGuiConfigFlags_ViewportsNoTaskBarIcons;
-		//io.ConfigFlags |= ImGuiConfigFlags_ViewportsNoMerge;
+		io.IniFilename = "assets/config/imgui.ini";
 
 		ImFont* pFont = io.Fonts->AddFontFromFileTTF("assets/fonts/NotoSans-Regular.ttf", 20.0f);
 		io.FontDefault = io.Fonts->Fonts.back();
 
 		// Setup Dear ImGui style
 		ImGui::StyleColorsDark();
-		//ImGui::StyleColorsClassic();
-
-		// When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
-		ImGuiStyle& style = ImGui::GetStyle();
-		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-		{
-			style.WindowRounding = 0.0f;
-			style.Colors[ImGuiCol_WindowBg].w = 1.0f;
-		}
-		style.Colors[ImGuiCol_WindowBg] = ImVec4(0.15f, 0.15f, 0.15f, style.Colors[ImGuiCol_WindowBg].w);
-
-		GLFWwindow* window = static_cast<GLFWwindow*>(s_window->get_native());
 
 		// Setup Platform/Renderer bindings
+		GLFWwindow* window = static_cast<GLFWwindow*>(s_window->get_native());
 		ImGui_ImplGlfw_InitForOpenGL(window, true);
 		ImGui_ImplOpenGL3_Init("#version 410");
 		ImGuizmo::SetOrthographic(false);
@@ -51,6 +37,7 @@ namespace Gaia {
 		m_windows.emplace_back(EditorWindow{ true, "Viewport", fn_viewport });
 		m_windows.emplace_back(EditorWindow{ true, "Hierarchy", fn_hierarchy });
 		m_windows.emplace_back(EditorWindow{ true, "Inspector", fn_inspector });
+		m_windows.emplace_back(EditorWindow{ true, "Render Buffers", fn_render_buffers });
 	}
 	Editor::~Editor()
 	{
@@ -148,15 +135,7 @@ namespace Gaia {
 		ImVec2 windowPos = ImGui::GetWindowPos();
 		urect rect_win = { (u32)windowSize.x, (u32)windowSize.y };
 		s_renderer->set_viewport(rect_win);
-
-		ImGui::Image((ImTextureID)s_renderer->get_final_texture_id(0), windowSize, { 0, 1 }, { 1, 0 });
-		ImGui::Separator();
-		ImGui::Image((ImTextureID)s_renderer->get_final_texture_id(1), windowSize, { 0, 1 }, { 1, 0 });
-		ImGui::Separator();
-		ImGui::Image((ImTextureID)s_renderer->get_final_texture_id(2), windowSize, { 0, 1 }, { 1, 0 });
-		ImGui::Separator();
-		ImGui::Image((ImTextureID)s_renderer->get_final_texture_id(3), windowSize, { 0, 1 }, { 1, 0 });
-
+		ImGui::Image((ImTextureID)s_renderer->get_render_buffer_txt_id(e_BufferID::Final), windowSize, { 0, 1 }, { 1, 0 });
 
 		// Gizmos
 		auto scn = s_session->get_current_scene();
@@ -230,6 +209,27 @@ namespace Gaia {
 					ImGui::TreePop();
 				}
 		}
+	}
+	void fn_render_buffers(Editor * editor)
+	{
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
+
+		float winWidth = ImGui::GetWindowContentRegionWidth();
+		float winHeight = winWidth * 9.0f / 16.0f;
+		ImVec2 winSize{ winWidth, winHeight };
+		ImGui::Text("Position:");
+		ImGui::Image((ImTextureID)s_renderer->get_render_buffer_txt_id(e_BufferID::Position), winSize, { 0, 1 }, { 1, 0 });
+		ImGui::Separator();
+		ImGui::Text("Albedo:");
+		ImGui::Image((ImTextureID)s_renderer->get_render_buffer_txt_id(e_BufferID::Albedo), winSize, { 0, 1 }, { 1, 0 });
+		ImGui::Separator();
+		ImGui::Text("Metalness/Roughness:");
+		ImGui::Image((ImTextureID)s_renderer->get_render_buffer_txt_id(e_BufferID::MetalRough), winSize, { 0, 1 }, { 1, 0 });
+		ImGui::Separator();
+		ImGui::Text("Normal:");
+		ImGui::Image((ImTextureID)s_renderer->get_render_buffer_txt_id(e_BufferID::Normal), winSize, { 0, 1 }, { 1, 0 });
+
+		ImGui::PopStyleVar();
 	}
 	bool insert_name(char * buf, u32 buf_size)
 	{

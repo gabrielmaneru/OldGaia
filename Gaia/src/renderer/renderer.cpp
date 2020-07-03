@@ -51,7 +51,7 @@ namespace Gaia {
 				"assets/shaders/gbuffer.vert",
 				"assets/shaders/gbuffer.frag"
 		});
-		m_gbuffer = new Framebuffer(urect{ 1920, 1080 },
+		m_fb_gbuffer = new Framebuffer(urect{ 1920, 1080 },
 			FramebufferProperties{
 				Texture::gbuffer_rgb,
 				Texture::gbuffer_rgb,
@@ -88,7 +88,7 @@ namespace Gaia {
 	{
 		delete m_shader_debug;
 		delete m_shader_gbuffer;
-		delete m_gbuffer;
+		delete m_fb_gbuffer;
 		delete m_fb_final;
 	}
 
@@ -96,7 +96,7 @@ namespace Gaia {
 	void Renderer::render()
 	{
 		// Render To GBuffer
-		m_gbuffer->bind();
+		m_fb_gbuffer->bind();
 		glClearColor(0.f, 0.f, 0.f, 0.f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -139,8 +139,20 @@ namespace Gaia {
 		m_viewport_size = size;
 		m_fb_final->resize(size);
 	}
-	u32 Renderer::get_final_texture_id(u32 id) const
+	u32 Renderer::get_render_buffer_txt_id(e_BufferID buf_id)
 	{
-		return m_gbuffer->get_txt_id(id);
+		switch (buf_id)
+		{
+		case e_BufferID::Position:
+			return m_fb_gbuffer->get_txt_id(0);
+		case e_BufferID::Albedo:
+			return m_fb_gbuffer->get_txt_id(1);
+		case e_BufferID::MetalRough:
+			return m_fb_gbuffer->get_txt_id(2);
+		case e_BufferID::Normal:
+			return m_fb_gbuffer->get_txt_id(3);
+		case e_BufferID::Final:
+			return m_fb_final->get_txt_id(0);
+		}
 	}
 }

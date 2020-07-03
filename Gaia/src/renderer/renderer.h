@@ -4,6 +4,7 @@
 #include <renderer/renderable.h>
 
 namespace Gaia {
+	enum class e_BufferID;
 	class Renderer {
 	public:
 		Renderer();
@@ -14,7 +15,7 @@ namespace Gaia {
 		void unregister_renderable(Renderable*);
 
 		void set_viewport(urect size);
-		u32 get_final_texture_id(u32 id)const;
+		u32 get_render_buffer_txt_id(e_BufferID buf_id);
 		
 		urect m_viewport_size{1920, 1080};
 		friend class Editor;
@@ -22,7 +23,12 @@ namespace Gaia {
 		std::set<Renderable*> m_renderables;
 		Shader* m_shader_gbuffer;
 		Shader* m_shader_debug;
-		Framebuffer* m_gbuffer;
+		Framebuffer* m_fb_gbuffer;
 		Framebuffer* m_fb_final;
+	};
+
+	enum class e_BufferID{
+		Position, Albedo,MetalRough,
+		Normal, Final
 	};
 }
